@@ -17,7 +17,7 @@ const ProductsSchema = new mongoose.Schema(
             default: false,
         },
         price: {
-            type: Decimal128,
+            type: Number,
             required: true,
         },
         stock: {
