@@ -11,7 +11,7 @@ router.post("/seed", (req, res) => {
 });
 
 //Create products
-// recibe el objeto con todos los datos necesarios al menos
+// recibe el objeto con todos los datos necesarios al menoss
 router.post("/create", (req, res) => {
   const products = new Products(req.body);
   products.save().then((user) => {
