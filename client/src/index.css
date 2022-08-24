@@ -1,0 +1,15 @@
+.product-details{
+    background-size: 100%;
+    
+  }
+  
+  .product-det{
+    padding: 1rem;
+    background-image: linear-gradient(to right,  rgba(178.5, 199.5, 220.5, 1) 150px, rgba(178.5, 199.5, 220.5, 0.84) 100%);
+  }
+  
+  
+  .fuente-detaills{
+    color: white;
+  }
+
