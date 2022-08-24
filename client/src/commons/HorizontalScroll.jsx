@@ -7,7 +7,7 @@ import { ProductsCards } from './ProductsCard';
 
 export const HorizontalScroll = ({props}) => {
 
-    
+   
   return (
         <Container bsPrefix="container-fluid overflow-auto">
             <Row bsPrefix="row flex-nowrap">
