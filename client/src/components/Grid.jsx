@@ -5,7 +5,7 @@ import { useState } from "react";
 import axios from "axios";
 import { HorizontalScroll } from "../commons/HorizontalScroll";
 
-export const Grid = () => {
+const Grid = () => {
   const [products, setProducts] = useState([]);
 
   //pedido axios a tmdb para testear
@@ -29,3 +29,5 @@ export const Grid = () => {
   </div>
   );
 };
+
+export default Grid;
