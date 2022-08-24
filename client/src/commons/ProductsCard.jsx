@@ -1,23 +1,24 @@
 import React from "react";
-import { Button } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
+import { Link } from "react-router-dom";
 
 export const ProductsCards = ({ props }) => {
+
+  
   return (
     <>
+    <Link to={`/products/${props._id}`}>
       <Card style={{ width: "18rem" }}>
         <Card.Img
           variant="top"
-          src={`https://image.tmdb.org/t/p/w500/${props.poster_path}`}
+          src={props.img}
         />
         <Card.Body>
-          <Card.Title>Card Title</Card.Title>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </Card.Text>
+          <Card.Title>{props.name}</Card.Title>
+         
         </Card.Body>
       </Card>
+      </Link>
     </>
   );
 };
