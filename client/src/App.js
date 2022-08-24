@@ -1,20 +1,31 @@
+
 import { Grid } from "./components/Grid";
 import { Route, Routes } from "react-router";
 import { ProductDetails } from "./commons/ProductDetails";
+import { Col, Container, Row } from "react-bootstrap";
+import LogIn from "./components/LogIn";
+import Navbar from "./components/Navbar";
+import Profile from "./components/Profile";
+import SignUp from "./components/SignUp";
+import Register from "./components/SignUp";
 
 
 
 
 function App() {
   return (
-    <>
-     
 
+    <div>
+      <Navbar/>
       <Routes>
-      <Route path="/" element={<Grid/>} />
-      <Route path="/products/:id" element={<ProductDetails />} />
+        <Route path="/" element={<Grid/>} />
+        <Route path="/products/:id" element={<ProductDetails />} />
+        <Route path='/signup' element={<SignUp/>} />
+        <Route path='/login' element={<LogIn />} />
+        <Route path='/profile' element={<Profile />} />
       </Routes>
-    </>
+    </div>
+
   );
 }
 
