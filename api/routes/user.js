@@ -72,7 +72,7 @@ router.put("/addtocart/:id", (req, res) => {
     });
   });
 });
-//Delete Product from Cart
+//Delete Product from Cart .
 router.delete("/removefromcart/:id", (req, res) => {
     Users.updateOne({ _id: req.params.id }, {$pull: {cart: {_id:req.body.pid} }}).then((product) => {
     res.status(204).send(product);
