@@ -11,16 +11,13 @@ export const Grid = () => {
   //pedido axios a tmdb para testear
   useEffect(() => {
     axios
-      .get(
-        "https://api.themoviedb.org/3/movie/popular?api_key=ad0325fab1fe8e15694efd8d579ef42a&language=en-US&page=1"
-      )
-      .then((res) => {
-        setProducts(res.data.results);
-      });
+      .get("/api/products/all")
+      .then((res) => res.data)
+      .then((data)=> setProducts(data))
   }, []);
 
   
-
+ 
   return (
     <div>
 
