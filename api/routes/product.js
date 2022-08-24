@@ -4,7 +4,7 @@ const Products = require("../models/Products");
 
 
 //Too seed db. (recibe array de objetos)
-router.post("/products/seed", (req, res) => {
+router.post("/seed", (req, res) => {
   Products.insertMany(req.body).then((product) => {
     res.status(201).send(product);
   });
@@ -12,7 +12,7 @@ router.post("/products/seed", (req, res) => {
 
 //Create products
 // recibe el objeto con todos los datos necesarios al menos
-router.post("/products/create", (req, res) => {
+router.post("/create", (req, res) => {
   const products = new Products(req.body);
   products.save().then((user) => {
     res.status(201).send(user);
@@ -29,7 +29,7 @@ router.get("/all", (req, res) => {
 });
 
 //Find  Product by name.
-router.get("/products/search/:name", (req, res) => {
+router.get("/search/:name", (req, res) => {
   Products.find({ name: { $regex: req.params.name } })
     .exec()
 
@@ -40,14 +40,14 @@ router.get("/products/search/:name", (req, res) => {
 
 //Find Specific Product by id
 // Recibe por parametro el id del producto
-router.get("/products/:pid", (req, res) => {
+router.get("/:pid", (req, res) => {
   Products.find({ _id: req.params.pid }).then((product) => {
     res.status(200).send(product);
   });
 });
 
 //Find all products, price range and category
-router.get("/products/range", (req, res) => {
+router.get("/range", (req, res) => {
   Products.find({
     price: { $gte: req.body.high, $lte: req.body.low },
     category: req.body.cat,
@@ -60,7 +60,7 @@ router.get("/products/range", (req, res) => {
 
 //Update Product (
 //db.products.updateOne({req.body}) 
-router.put("/products/modify", (req, res) => {
+router.put("/modify", (req, res) => {
   Products.updateOne({ _id: req.body.id }, { $set: req.body.mod }).then(
     (product) => {
       res.status(201).send(product);
@@ -69,7 +69,7 @@ router.put("/products/modify", (req, res) => {
 });
 
 //Update and push reviews
-router.put("/products/review", (req, res) => {
+router.put("/review", (req, res) => {
   Products.updateOne(
     { _id: req.body.id },
     { $push: { review: req.body.review } }
@@ -79,7 +79,7 @@ router.put("/products/review", (req, res) => {
 });
 
 //delete
-router.delete("/products/delete/:id", (req, res) => {
+router.delete("/delete/:id", (req, res) => {
     Products.deleteOne({ _id: req.params.id }).then((product) => {
     res.status(204).send(product);
   });
