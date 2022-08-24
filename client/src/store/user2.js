@@ -5,6 +5,7 @@ const user = {
 }
 
 export const setUser = createAction('SET_USER')
+
 const userReducer = createReducer(user, {
     [setUser]: (state, action) => action.payload
 })
