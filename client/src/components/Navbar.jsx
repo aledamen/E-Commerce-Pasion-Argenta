@@ -15,10 +15,12 @@ import AccountCircle from '@mui/icons-material/AccountCircle'
 import MailIcon from '@mui/icons-material/Mail'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import MoreIcon from '@mui/icons-material/MoreVert'
-import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { Avatar } from '@mui/material'
 import { useState } from 'react'
+import { signUpRequest, LogOutRequest } from '../store/user'
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -63,7 +65,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 export default function PrimarySearchAppBar() {
     //traigo estado del usuario
     const user = useSelector((state) => state.user)
-    const [search, setSearch] = useState("")
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const [search, setSearch] = useState('')
     const [anchorEl, setAnchorEl] = React.useState(null)
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
 
@@ -92,9 +96,15 @@ export default function PrimarySearchAppBar() {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log("esta es search", search)
+        console.log('esta es search', search)
     }
-
+    const handleCart = (e) => {
+        navigate("/cart")
+    }
+    const handleLogOut = (e) => {
+        dispatch(LogOutRequest());
+    }
+    console.log("este es el user", user)
     const menuId = 'primary-search-account-menu'
     const renderMenu = (
         <Menu
@@ -114,20 +124,23 @@ export default function PrimarySearchAppBar() {
         >
             {user.username ? (
                 <div>
-                    <Link to="/profile" style={{textDecoration: 'none'}}>
+                    <Link to="/profile" style={{ textDecoration: 'none' }}>
                         <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
                     </Link>
-                    <Link to="/profile" style={{textDecoration: 'none'}}>
+                    <Link to="/profile" style={{ textDecoration: 'none' }}>
                         <MenuItem onClick={handleMenuClose}>My account</MenuItem>
                     </Link>
-                    <MenuItem onClick={handleMenuClose}>Log Out</MenuItem>
+                    <div onClick={handleLogOut} style={{ textDecoration: 'none', color: 'inherit', border:'none', backgroundColor:'none' }}>
+                      <MenuItem onClick={handleMenuClose}>Log Out</MenuItem>  
+                      </div>
+                    
                 </div>
             ) : (
                 <div>
-                    <Link to="/signup" style={{textDecoration: 'none'}}>
-                            <MenuItem onClick={handleMenuClose}>Sign Up</MenuItem>
+                    <Link to="/signup" style={{ textDecoration: 'none' }}>
+                        <MenuItem onClick={handleMenuClose}>Sign Up</MenuItem>
                     </Link>
-                    <Link to="/login" style={{textDecoration: 'none'}}>
+                    <Link to="/login" style={{ textDecoration: 'none' }}>
                         <MenuItem onClick={handleMenuClose}>Log In</MenuItem>
                     </Link>
                 </div>
@@ -176,7 +189,14 @@ export default function PrimarySearchAppBar() {
                     aria-haspopup="true"
                     color="inherit"
                 >
-                    {user.username ? <Avatar alt="Remy Sharp" src="https://thumbs.dreamstime.com/b/hombre-avatar-del-friki-104871313.jpg" /> : <AccountCircle /> }
+                    {user.username ? (
+                        <Avatar
+                            alt="Remy Sharp"
+                            src="https://thumbs.dreamstime.com/b/hombre-avatar-del-friki-104871313.jpg"
+                        />
+                    ) : (
+                        <AccountCircle />
+                    )}
                 </IconButton>
                 <p>Profile</p>
             </MenuItem>
@@ -184,32 +204,66 @@ export default function PrimarySearchAppBar() {
     )
 
     return (
-        <Box sx={{ flexGrow: 1}}>
+        <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar sx={{ padding: '0' }}>
                     <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
-                       <Link to="/" style={{textDecoration: 'none', color:'white'}}>Pasion Argenta</Link> 
+                        <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
+                            Pasion Argenta
+                        </Link>
                     </Typography>
                     <Search>
-                    <form onSubmit={handleSubmit} style={{display:'flex', alignItems:'center', border:'none', marginLeft:'24px', borderRadius:'8px', height:'35px', backgroundColor:'none'}}>
-                        {/* <button type='submit'>
+                        <form
+                            onSubmit={handleSubmit}
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                border: 'none',
+                                marginLeft: '24px',
+                                borderRadius: '8px',
+                                height: '35px',
+                                backgroundColor: 'none',
+                            }}
+                        >
+                            {/* <button type='submit'>
                             
                         </button> */}
-                        <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} onChange={handleSearch} sx={{padding:'2px', color:'white'}} />
-                        <button className="searchButton" type="submit" style={{background:'none', color:'white', border: 'none'}}>
+                            <StyledInputBase
+                                placeholder="Search…"
+                                inputProps={{ 'aria-label': 'search' }}
+                                onChange={handleSearch}
+                                sx={{ padding: '2px', color: 'white' }}
+                            />
+                            <button
+                                className="searchButton"
+                                type="submit"
+                                style={{ background: 'none', color: 'white', border: 'none' }}
+                            >
                                 {' '}
                                 <SearchIcon
                                     sx={{ '&:hover': { color: '#1b94cc' } }}
-                                    style={{ marginLeft: '6px', paddingTop: '2px', width: '30px', height: '30px', padding:'5px' }}
+                                    style={{
+                                        marginLeft: '6px',
+                                        paddingTop: '2px',
+                                        width: '30px',
+                                        height: '30px',
+                                        padding: '5px',
+                                    }}
                                     className="icon"
                                 />
                             </button>
-                    </form></Search>
+                        </form>
+                    </Search>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                    <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+                            <Badge badgeContent={0} color="error">
+                                <ShoppingCartIcon onClick={handleCart} />
+                            </Badge>
+                        </IconButton>
                         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                             <Badge badgeContent={0} color="error">
                                 <MailIcon />

@@ -23,7 +23,7 @@
     "price": 75,
     "stock": 20,
     "category": ["Accesorios"],
-    "review": [],
+    "review": []
     },
     {
     "name": "Manta Selección",
