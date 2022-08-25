@@ -1,29 +1,32 @@
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-
+import { Col, Container, Row } from "react-bootstrap";
 import axios from "axios";
-import { HorizontalScroll } from "../commons/HorizontalScroll";
+import { ProductsCards } from "../commons/ProductsCard";
 
 const Grid = () => {
   const [products, setProducts] = useState([]);
 
-  //pedido axios a tmdb para testear
   useEffect(() => {
     axios
       .get("/api/products/all")
       .then((res) => res.data)
-      .then((data)=> setProducts(data))
+      .then((data) => setProducts(data));
   }, []);
 
-  
- 
   return (
-    <div>
-
-  <HorizontalScroll props={products} />
-  
-  </div>
+    <div >
+    <Container>
+      <Row>
+        {products.map((product, index) => (
+          <Col style={{marginBottom:"20px"}} key={`product-${index}`}>
+            <ProductsCards key={index} props={product} />
+          </Col>
+        ))}
+      </Row>
+    </Container>
+    </div>
   );
 };
 
