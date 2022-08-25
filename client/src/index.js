@@ -6,16 +6,20 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import "./index.css";
 import store from './store/store'
+import { ThemeProvider } from '@mui/system';
+import { theme } from './theme';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 
   <React.StrictMode>
-  <Provider store={store}>
-  <Router>  
+    <Provider store={store}>
+    <ThemeProvider theme={theme}>
+      <Router>  
       <App /> 
-    </Router>
-  </Provider>,
+      </Router>
+     </ThemeProvider> 
+  </Provider>
   </React.StrictMode>
   
 );

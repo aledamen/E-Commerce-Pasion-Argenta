@@ -15,6 +15,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useDispatch } from 'react-redux'
 import { useState } from 'react'
 import {useForm} from 'react-hook-form'
+import { LogInRequest } from '../store/user'
+import { useNavigate } from 'react-router'
 
 function Copyright(props) {
     return (
@@ -31,6 +33,8 @@ const theme = createTheme()
 
 export default function LogIn() {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+
     const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             email: '',
@@ -38,7 +42,11 @@ export default function LogIn() {
         }
     })
     const onSubmit = (data) => {
-        console.log(data)
+        dispatch(LogInRequest(data)).then(()=>navigate('/'))
+        //     .then((info) => {
+        //     localStorage.setItem("user", JSON.stringify(info.payload.user));
+        //     localStorage.setItem("token", info.payload.token);  
+        // })
     }
     // const [userInfo, setUserInfo] = useState({
     //     email: '',
