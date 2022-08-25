@@ -31,6 +31,46 @@ static async getUser (req, res) {
     }
 }
 
+static async addToCart (req, res) {
+    try{
+        const product = await UserService.addToCart(req.params.id, req.body)
+        if (!product) return res.status(404).send('User not found')
+        return res.status(201).send(product)     
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+static async removeFromCart (req, res) {
+    try{
+        const product = await UserService.removeFromCart(req.params.id, req.body.pid)
+        if (!product) return res.status(404).send('User not found')
+        return res.status(201).send(product)     
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+static async modifyCart (req, res) {
+    try{
+        const updated = await UserService.modifyCart(req.params.id, req.body)
+        if (!updated) return res.status(404).send('User not found')
+        return res.status(201).send(updated)     
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+static async findInCart (req, res) {
+    try{
+        const obj = await UserService.findInCart(req.params.id, req.body.pid)
+        if (!obj) return res.status(404).send('User not found')
+        return res.status(200).send(obj)     
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 }
 
 module.exports = UserController;
