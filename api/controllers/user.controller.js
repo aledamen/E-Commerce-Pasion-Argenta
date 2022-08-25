@@ -4,8 +4,8 @@ class UserController {
 
   static async createUser (req, res) {
     try{
-        const user = UserService.createUser(req.body)
-        return res.sendStatus(201).send(user)
+        const user = await UserService.createUser(req.body)
+        return res.status(201).send(user)
     } catch (error) {
         console.log(error);
     }
@@ -26,6 +26,44 @@ static async getUser (req, res) {
         const user = await UserService.getUser(req.params.id)
         if (!user) return res.status(404).send('User not found')
         return res.status(200).send(user)     
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+static async getfavorites (req,res) {
+    try{
+        const user = await UserService.getUser(req.params.id)
+        if (!user) return res.status(404).send('User not found') 
+        return res.send(user.favorites)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+static async userModify (req,res) {
+    try{
+        const user = await UserService.userModify(req.body)
+        return res.status(204).send(user)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+static async putToAdmin (req,res) {
+    try{
+        const user = await UserService.putToAdmin(req.body)
+        return res.status(204).send(user)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+static async deleteUser (req,res) {
+    try{
+        const user = await UserService.deleteUser(req.params.id)
+        return res.status(204).send(user)
     } catch (error) {
         console.log(error);
     }
