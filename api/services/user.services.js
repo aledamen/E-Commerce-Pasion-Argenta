@@ -1,7 +1,6 @@
 const Users = require("../models/Users");
 
 class UserService {
-
     static async createUser (body) {
         try{
             const user = new Users(body);
