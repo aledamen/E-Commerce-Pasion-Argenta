@@ -39,6 +39,19 @@ router.get("/search/:name", (req, res) => {
       res.status(200).send(product);
     });
 });
+//Find all products, price range and category
+//example:
+// {"high":1, "low":200000, "cat": ["Accesorios"] }
+router.get("/range/", (req, res) => {
+  Products.find({
+    price: { $gte: req.body.high, $lte: req.body.low},
+    category: req.body.cat,
+  })
+    //.sort({ price: 1 })
+    .then((products) => {
+      res.status(200).send(products);
+    });
+});
 
 //Find Specific Product by id
 // Recibe por parametro el id del producto
@@ -46,18 +59,6 @@ router.get("/:pid", (req, res) => {
   Products.find({ _id: req.params.pid }).then((product) => {
     res.status(200).send(product);
   });
-});
-
-//Find all products, price range and category
-router.get("/range", (req, res) => {
-  Products.find({
-    price: { $gte: req.body.high, $lte: req.body.low },
-    category: req.body.cat,
-  })
-    .sort({ price: 1 })
-    .then((products) => {
-      res.status(200).send(products);
-    });
 });
 
 //Update Product (
