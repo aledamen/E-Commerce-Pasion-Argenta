@@ -2,9 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-
-  "proxy" : "http://localhost:3001",
-
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
@@ -26,6 +24,7 @@
     "redux": "^4.2.0",
     "redux-logger": "^3.0.6",
     "sass": "^1.54.5",
+    "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

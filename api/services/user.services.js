@@ -1,9 +1,9 @@
+const Products = require("../models/Products");
 const Users = require("../models/Users");
 const Products = require("../models/Products")
 const ObjectId = require("mongodb").ObjectId;
 
 class UserService {
-
     static async createUser (body) {
         try{
             const user = new Users(body);
@@ -54,23 +54,40 @@ class UserService {
         try{
                 return await Users.updateOne({'_id': ObjectId(id)}, 
                 {$pull:{cart:{'_id':  ObjectId(pid)}}})
+
+    static async userModify(body) {
+        try {
+            return await Users.updateOne({_id:body.id},{$set:body.mod})
+
         } catch (error) {
             console.log(error);
         }
     }
+
 
     static async modifyCart (id, {pid, amount}) {
         try{
                 return await Users.updateOne({'_id': ObjectId(id),"cart._id":ObjectId(pid)},
                 {$set:{"cart.$.amount":amount}} )
+
+    static async putToAdmin (body) {
+        try {
+            return await Users.updateOne({_id: body.id},{$set:{isAdmin: body.toggle}})
+
         } catch (error) {
             console.log(error);
         }
     }
 
+
     static async findInCart (id,pid) {
         try{
                 return await Users.find({'_id': ObjectId(id),"cart._id":ObjectId(pid)})
+
+    static async deleteUser (id) {
+        try {
+            return await Users.deleteOne({ _id: id })
+
         } catch (error) {
             console.log(error);
         }

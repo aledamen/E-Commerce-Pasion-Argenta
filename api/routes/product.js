@@ -1,91 +1,38 @@
 const express = require("express");
+const ProductController = require("../controllers/product.controller");
 const router = express.Router();
 const Products = require("../models/Products");
 
-
 //Too seed db. (recibe array de objetos)
-router.post("/seed", (req, res) => {
-  Products.insertMany(req.body).then((product) => {
-    res.status(201).send(product);
-  });
-});
+router.post("/seed", ProductController.seedDb);
 
-//Create products
-
-// recibe el objeto con todos los datos necesarios al menos
-
-router.post("/create", (req, res) => {
-  const products = new Products(req.body);
-  products.save().then((user) => {
-    res.status(201).send(user);
-  });
-});
+//Create products recibe el objeto con todos los datos necesarios al menos
+router.post("/create", ProductController.createProduct);
 
 //Find all products in Alphabetical order
-router.get("/all", (req, res) => {
-  Products.find()
-    .sort({ name: 1 })
-    .then((products) => {
-      res.status(200).send(products);
-    });
-});
+router.get("/all", ProductController.findAllProducts);
 
 //Find  Product by name.
-router.get("/search/:name", (req, res) => {
-  Products.find({ name: { $regex: req.params.name } })
-    .exec()
+//solucionar case sentitive ***
+router.get("/search/:name", ProductController.findByName);
 
-    .then((product) => {
-      res.status(200).send(product);
-    });
-});
 //Find all products, price range and category
-//example:
-// {"high":1, "low":200000, "cat": ["Accesorios"] }
-router.get("/range/", (req, res) => {
-  Products.find({
-    price: { $gte: req.body.high, $lte: req.body.low},
-    category: req.body.cat,
-  })
-    //.sort({ price: 1 })
-    .then((products) => {
-      res.status(200).send(products);
-    });
-});
+router.get("/range", ProductController.findByRange);
 
 //Find Specific Product by id
 // Recibe por parametro el id del producto
-router.get("/:pid", (req, res) => {
-  Products.find({ _id: req.params.pid }).then((product) => {
-    res.status(200).send(product);
-  });
-});
+router.get("/:pid", ProductController.findById);
 
-//Update Product (
-//db.products.updateOne({req.body}) 
-router.put("/modify", (req, res) => {
-  Products.updateOne({ _id: req.body.id }, { $set: req.body.mod }).then(
-    (product) => {
-      res.status(201).send(product);
-    }
-  );
-});
+//Find all products, price range and category
+router.get("/range", ProductController.findByRange);
+
+//Update Product (/*{"id":"6307bc9bc001a539fb32d743", "mod":{"stock":"222"}}*/
+router.put("/modify", ProductController.modifyProduct);
 
 //Update and push reviews
-router.put("/review", (req, res) => {
-  Products.updateOne(
-    { _id: req.body.id },
-    { $push: { review: req.body.review } }
-  ).then((product) => {
-    res.status(201).send(product);
-  });
-});
+router.put("/review", ProductController.pushReviews);
 
 //delete
-router.delete("/delete/:id", (req, res) => {
-    Products.deleteOne({ _id: req.params.id }).then((product) => {
-    res.status(204).send(product);
-  });
-});
+router.delete("/delete/:id", ProductController.deleteProduct);
 
 module.exports = router;

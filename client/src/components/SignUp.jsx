@@ -15,6 +15,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {useForm} from 'react-hook-form'
+import { signUpRequest } from '../store/user'
+import { useNavigate } from 'react-router'
 
 function Copyright(props) {
     return (
@@ -29,10 +31,11 @@ function Copyright(props) {
     )
 }
 
-const theme = createTheme()
+// const theme = createTheme()
 
 export default function SignUp() {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             username: '',
@@ -49,12 +52,15 @@ export default function SignUp() {
     //     setUserInfo({ ...userInfo, [e.target.name]: e.target.value })
     // }
     const onSubmit = (data) => {
-        console.log(data)
+        dispatch(signUpRequest(data)).then(()=>navigate('/'))
+
+        // localStorage.setItem("user", JSON.stringify(data.user));
+        // localStorage.setItem("token", data.token)
         // localStorage.setItem("user", JSON.stringify )
         // dispatch(signUpRequest(userInfo)).then((res) => res.payload ? navigate("/") : navigate("/signup"))
     }
     return (
-        <ThemeProvider theme={theme}>
+        // <ThemeProvider theme={theme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -133,6 +139,6 @@ export default function SignUp() {
                 </Box>
                 <Copyright sx={{ mt: 5 }} />
             </Container>
-        </ThemeProvider>
+        // </ThemeProvider>
     )
 }
