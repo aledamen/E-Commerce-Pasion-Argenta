@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import Card from "react-bootstrap/Card";
 import { Col, Row } from "react-bootstrap";
-
+import IconButton from "@mui/material/IconButton";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 export const ProductDetails = () => {
   const { id } = useParams();
@@ -44,15 +45,20 @@ export const ProductDetails = () => {
                     <h4>Stock:{product[0].stock}</h4>
                   </div>
                   <div class="d-flex flex-row-reverse">
-                    <h4>Precio : ${product[0].price}</h4>
+                    <h4>
+                      Precio : ${product[0].price}{" "}
+                      <span>
+                        <IconButton onClick={()=>{alert("agregado al carrito")}}
+                          color="primary"
+                          aria-label="add to shopping cart"
+                        >
+                          <AddShoppingCartIcon fontSize="large" />
+                        </IconButton>
+                      </span>
+                    </h4>
                   </div>
                 </div>
-                <div>
-                    
-
-
-                </div>
-              
+                <div></div>
               </Col>
             </Row>
           </div>
