@@ -1,4 +1,6 @@
 const express = require("express");
+const mongoose = require('mongoose');
+const { isObjectIdOrHexString } = require("mongoose");
 
 const UserController = require("../controllers/user.controller");
 
@@ -6,7 +8,7 @@ const Products = require("../models/Products");
 
 const Users = require("../models/Users");
 const router = express.Router();
-
+const ObjectId = require("mongodb").ObjectId;
 // registrar un usuario
 
 router.post("/register/", UserController.createUser);
@@ -52,32 +54,23 @@ router.delete("/delete/:id", (req, res) => {
 //El stock se validara antes de hacer checkout a la cart
 //agrega nombre y id del producto a cart[] de users, el resto se trae dinamicamente de la tabla products para mantener stock y precio actualizado
 //
-router.put("/addtocart/:id", (req, res) => {
-  Products.findById(req.body.pid, { name: 1, description: 1 })
-  .then((product) => {
-    console.log("aaaaa", product)
-    Users.updateOne(
-      { _id: req.params.id },
-      {
-        $push: {
-          cart: {
-            _id: product._id,
-            name: product.name,
-            amount: req.body.amount,
-          },
-        },
-      }
-    ).then(() => {
-      res.status(201).send(product);
-    });
-  });
-});
+router.put("/addtocart/:id", UserController.addToCart);
+
+
+
 //Delete Product from Cart .
-router.delete("/removefromcart/:id", (req, res) => {
-    Users.updateOne({ _id: req.params.id }, {$pull: {cart: {_id:req.body.pid} }}).then((product) => {
-    res.status(204).send(product);
-  });
-});
+// recibe user id por params, y un objeto en body con pid
+
+router.delete("/removefromcart/:id", UserController.removeFromCart);
+
+// Modify amount of product
+// Modifica la cantidad de un producto de una cart de un usuario.
+//Recibe User Id por params, Pid por Body.pid, cantidad agregada por body.amount
+
+router.put("/modifycart/:id",UserController.modifyCart)
+
+//find product in cart (in progress)
+router.get("/findincart/:id",UserController.findInCart);
 
 module.exports = router;
 
