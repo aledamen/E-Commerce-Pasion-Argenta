@@ -54,7 +54,11 @@ class UserService {
         try{
                 return await Users.updateOne({'_id': ObjectId(id)}, 
                 {$pull:{cart:{'_id':  ObjectId(pid)}}})
-
+            } catch (error) {
+                console.log(error);
+            }
+    }
+    
     static async userModify(body) {
         try {
             return await Users.updateOne({_id:body.id},{$set:body.mod})
@@ -69,7 +73,10 @@ class UserService {
         try{
                 return await Users.updateOne({'_id': ObjectId(id),"cart._id":ObjectId(pid)},
                 {$set:{"cart.$.amount":amount}} )
-
+            } catch (error) {
+                console.log(error);
+            }
+        }
     static async putToAdmin (body) {
         try {
             return await Users.updateOne({_id: body.id},{$set:{isAdmin: body.toggle}})
@@ -83,7 +90,11 @@ class UserService {
     static async findInCart (id,pid) {
         try{
                 return await Users.find({'_id': ObjectId(id),"cart._id":ObjectId(pid)})
-
+            } catch (error) {
+                console.log(error);
+            }
+    }
+    
     static async deleteUser (id) {
         try {
             return await Users.deleteOne({ _id: id })
