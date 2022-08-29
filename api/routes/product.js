@@ -3,33 +3,34 @@ const ProductController = require("../controllers/product.controller");
 const router = express.Router();
 const Products = require("../models/Products");
 
-//Too seed db. (recibe array de objetos)
+//Too seed db. (recibe array de objetos) format: [{},{},{}] 
 router.post("/seed", ProductController.seedDb);
 
-//Create products recibe el objeto con todos los datos necesarios al menos
+//Create products recibe el objeto con todos los datos requeridos
 router.post("/create", ProductController.createProduct);
 
 //Find all products in Alphabetical order
 router.get("/all", ProductController.findAllProducts);
 
 //Find  Product by name.
-//solucionar case sentitive ***
+//solucionar case sentitive *** Solucionado
 router.get("/search/:name", ProductController.findByName);
 
-//Find all products, price range and category
+//Find all products, by category only (body ex: {"cat": "Accesorios"})
+router.get("/category/", ProductController.findByCat);
+
+//Find all products, price range( lowest/highest) and category, (body ex: "{"low":300,"high":100,"cat": "Accesorios"}")
 router.get("/range", ProductController.findByRange);
 
 //Find Specific Product by id
 // Recibe por parametro el id del producto
 router.get("/:pid", ProductController.findById);
 
-//Find all products, price range and category
-router.get("/range", ProductController.findByRange);
-
-//Update Product (/*{"id":"6307bc9bc001a539fb32d743", "mod":{"stock":"222"}}*/
+//Update Product (body ex: {"id":"6307bc9bc001a539fb32d743", "mod":{"stock":"222"}}
 router.put("/modify", ProductController.modifyProduct);
 
-//Update and push reviews
+//Update and push reviews 
+//(body ex:  {"id":"6307bc9bc001a539fb32d743","review": {"review": "esta buena","userId": "630bc5b953cfd44ae2914109","rating": 4}}  )
 router.put("/review", ProductController.pushReviews);
 
 //delete
