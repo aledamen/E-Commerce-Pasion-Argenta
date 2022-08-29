@@ -20,7 +20,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Avatar } from '@mui/material'
 import { useState } from 'react'
-import { signUpRequest, LogOutRequest } from '../store/user'
+import { signUpRequest, LogOutRequest, sendMe } from '../store/user'
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -38,16 +38,6 @@ const Search = styled('div')(({ theme }) => ({
     },
 }))
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}))
-
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
@@ -62,9 +52,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }))
 
-export default function PrimarySearchAppBar() {
+export default function Navbar() {
     //traigo estado del usuario
     const user = useSelector((state) => state.user)
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [search, setSearch] = useState('')
@@ -99,12 +90,12 @@ export default function PrimarySearchAppBar() {
         console.log('esta es search', search)
     }
     const handleCart = (e) => {
-        navigate("/cart")
+        dispatch(sendMe()).then(() => navigate('/cart'))
     }
     const handleLogOut = (e) => {
-        dispatch(LogOutRequest());
+        dispatch(LogOutRequest()).then(() => navigate('/'))
     }
-    console.log("este es el user", user)
+
     const menuId = 'primary-search-account-menu'
     const renderMenu = (
         <Menu
@@ -130,10 +121,12 @@ export default function PrimarySearchAppBar() {
                     <Link to="/profile" style={{ textDecoration: 'none' }}>
                         <MenuItem onClick={handleMenuClose}>My account</MenuItem>
                     </Link>
-                    <div onClick={handleLogOut} style={{ textDecoration: 'none', color: 'inherit', border:'none', backgroundColor:'none' }}>
-                      <MenuItem onClick={handleMenuClose}>Log Out</MenuItem>  
-                      </div>
-                    
+                    <div
+                        onClick={handleLogOut}
+                        style={{ textDecoration: 'none', color: 'red', border: 'none', backgroundColor: 'none' }}
+                    >
+                        <MenuItem onClick={handleMenuClose}>Log Out</MenuItem>
+                    </div>
                 </div>
             ) : (
                 <div>
@@ -165,6 +158,14 @@ export default function PrimarySearchAppBar() {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
+            <MenuItem>
+                <IconButton onClick={handleCart} size="large" aria-label="show 0 new mails" color="inherit">
+                    <Badge badgeContent={user.cart?.length} color="error">
+                        <ShoppingCartIcon/>
+                    </Badge>
+                </IconButton>
+                <p>Cart</p>
+            </MenuItem>
             <MenuItem>
                 <IconButton size="large" aria-label="show 0 new mails" color="inherit">
                     <Badge badgeContent={0} color="error">
@@ -207,7 +208,7 @@ export default function PrimarySearchAppBar() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar sx={{ padding: '0' }}>
-                    <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
+                    <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }} >
                         <MenuIcon />
                     </IconButton>
                     <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
@@ -228,9 +229,6 @@ export default function PrimarySearchAppBar() {
                                 backgroundColor: 'none',
                             }}
                         >
-                            {/* <button type='submit'>
-                            
-                        </button> */}
                             <StyledInputBase
                                 placeholder="Search…"
                                 inputProps={{ 'aria-label': 'search' }}
@@ -259,8 +257,8 @@ export default function PrimarySearchAppBar() {
                     </Search>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                    <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={0} color="error">
+                        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+                            <Badge badgeContent={user.cart?.length} color="error">
                                 <ShoppingCartIcon onClick={handleCart} />
                             </Badge>
                         </IconButton>
@@ -283,7 +281,14 @@ export default function PrimarySearchAppBar() {
                             onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
-                            <AccountCircle />
+                            {user.username ? (
+                                <Avatar
+                                    alt="Remy Sharp"
+                                    src="https://thumbs.dreamstime.com/b/hombre-avatar-del-friki-104871313.jpg"
+                                />
+                            ) : (
+                                <AccountCircle />
+                            )}
                         </IconButton>
                     </Box>
                     <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

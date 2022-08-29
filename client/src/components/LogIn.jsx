@@ -11,12 +11,12 @@ import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { useDispatch } from 'react-redux'
-import { useState } from 'react'
 import {useForm} from 'react-hook-form'
 import { LogInRequest } from '../store/user'
 import { useNavigate } from 'react-router'
+import { useState } from 'react'
+import { Alert, Snackbar } from '@mui/material'
 
 function Copyright(props) {
     return (
@@ -28,13 +28,10 @@ function Copyright(props) {
         </Typography>
     )
 }
-
-const theme = createTheme()
-
 export default function LogIn() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
-
+    const [open, setOpen] = useState(false)
     const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             email: '',
@@ -42,26 +39,14 @@ export default function LogIn() {
         }
     })
     const onSubmit = (data) => {
-        dispatch(LogInRequest(data)).then(()=>navigate('/'))
-        //     .then((info) => {
-        //     localStorage.setItem("user", JSON.stringify(info.payload.user));
-        //     localStorage.setItem("token", info.payload.token);  
-        // })
+        dispatch(LogInRequest(data)).then((res)=> res.payload ? navigate('/') : setOpen(true))
     }
-    // const [userInfo, setUserInfo] = useState({
-    //     email: '',
-    //     password: '',
-    // })
-    // const handleChange = (e) => {
-    //     setUserInfo({ ...userInfo, [e.target.name]: e.target.value })
-    // }
-    // const handleSubmit = (e) => {
-    //     localStorage.setItem("user", JSON.stringify(userInfo) )
-    //     // dispatch(signUpRequest(userInfo)).then((res) => res.payload ? navigate("/") : navigate("/signup"))
-    // }
+    const handleClose = () => {
+        setOpen(false);
+      };
 
     return (
-        <ThemeProvider theme={theme}>
+
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -72,7 +57,7 @@ export default function LogIn() {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: '#1976d2' }}>
+                    <Avatar sx={{ m: 1, bgcolor: '#2196f3' }}>
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
@@ -91,7 +76,6 @@ export default function LogIn() {
                             }})}
                             autoComplete="email"
                             autoFocus
-
                         />
                         {errors.email?.message }
                         <TextField
@@ -124,8 +108,14 @@ export default function LogIn() {
                         </Grid>
                     </Box>
                 </Box>
-                <Copyright sx={{ mt: 8, mb: 4 }} />
+            <Copyright sx={{ mt: 8, mb: 4 }} />
+            <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+      >
+        <Alert severity="error">Please enter a valid email or password</Alert>
+        </Snackbar>
             </Container>
-        </ThemeProvider>
     )
 }

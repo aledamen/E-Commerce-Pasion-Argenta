@@ -27,14 +27,7 @@ class UserService {
     }
   }
 
-  static async removeFromCart(id, pid) {
-    try {
-      return await Users.updateOne(
-        { _id: ObjectId(id) },
-        { $pull: { cart: { _id: ObjectId(pid) } } }
-      );
-    } catch (error) {
-      console.log(error);
+
     }
   }
 
