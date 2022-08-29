@@ -17,10 +17,10 @@ router.get("/all", ProductController.findAllProducts);
 router.get("/search/:name", ProductController.findByName);
 
 //Find all products, by category only (body ex: {"cat": "Accesorios"})
-router.get("/category/", ProductController.findByCat);
+router.post("/category/", ProductController.findByCat);
 
 //Find all products, price range( lowest/highest) and category, (body ex: "{"low":300,"high":100,"cat": "Accesorios"}")
-router.get("/range", ProductController.findByRange);
+router.post("/range", ProductController.findByRange);
 
 //Find Specific Product by id
 // Recibe por parametro el id del producto
