@@ -27,7 +27,6 @@ class UserService {
     }
   }
   
-
   static async userModify(body) {
     try {
       return await Users.updateOne({ _id: body.id }, { $set: body.mod });
