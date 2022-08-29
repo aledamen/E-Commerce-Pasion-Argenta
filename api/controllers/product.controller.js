@@ -56,6 +56,15 @@ class ProductController {
         }
     }
 
+    static async findByCat (req,res) {
+        try {
+            const products = await ProductService.findByCat(req.body)
+            return res.status(200).send(products);
+        } catch (error){
+            console.log(error);
+        }
+    }
+
     static async modifyProduct (req,res) {
         try {
             const product = await ProductService.modifyProduct(req.body)
