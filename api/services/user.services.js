@@ -1,7 +1,7 @@
 const Products = require("../models/Products");
 const Users = require("../models/Users");
 const ObjectId = require("mongodb").ObjectId;
-
+//fix
 class UserService {
   static async createUser(body) {
     try {
@@ -26,10 +26,7 @@ class UserService {
       console.log(error);
     }
   }
-
-
-    }
-  }
+  
 
   static async userModify(body) {
     try {
