@@ -4,11 +4,12 @@ import Navbar from "./components/Navbar";
 import Profile from "./components/Profile";
 import SignUp from "./components/SignUp";
 import { ProductDetails } from "./commons/ProductDetails";
-import { Main } from "./components/Home";
+import { Home } from "./pages/Home";
 import Cart from "./components/Cart";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { LogInRequest, sendMe, setUser, signUpRequest } from "./store/user";
+import { sendMe } from "./store/user";
+
 
 
 function App() {
@@ -28,8 +29,8 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/products/:id" element={<ProductDetails />} />
-        <Route path='/' element={<Main />} />
-        <Route path='/signup' element={<SignUp/>} />
+        <Route path='/' element={<Home />} />
+        <Route path='/signup' element={<SignUp />} />
         <Route path='/login' element={<LogIn />} />
         <Route path='/profile' element={<Profile />} />
         <Route path="/cart" element={<Cart />} />
