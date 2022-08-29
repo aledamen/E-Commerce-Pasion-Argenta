@@ -40,7 +40,7 @@ router.put("/addtocart/:id", UserController.addToCart);
 //Delete Product from Cart .
 // recibe user id por params, y un objeto en body con pid
 
-router.delete("/removefromcart/:id", UserController.removeFromCart);
+router.put("/removefromcart/:id", UserController.removeFromCart);
 
 // Modify amount of product
 // Modifica la cantidad de un producto de una cart de un usuario.
