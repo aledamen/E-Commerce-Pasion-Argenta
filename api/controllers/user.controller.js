@@ -52,8 +52,7 @@ static async getfavorites (req,res) {
     }
 }
 
-
-static async removeFromCart (req, res) {
+static async removeFromCart(req, res) {
     try{
         const product = await UserService.removeFromCart(req.params.id, req.body.pid)
         if (!product) return res.status(404).send('User not found')
