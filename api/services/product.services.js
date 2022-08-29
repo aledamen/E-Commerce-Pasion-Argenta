@@ -29,7 +29,7 @@ class ProductService {
 
     static async findByName(name) {
         try {
-            return await Products.find({name:{$regex:name}})
+            return await Products.find({name:{$regex:name, '$options' : 'i'}}) //case insensitive
             .exec()
         } catch (error) {
             console.log(error);
@@ -55,9 +55,11 @@ class ProductService {
         }
     }
 
-    static async modifyProduct ({id,mod}) {
+    static async findByCat ({cat}) {
         try {
-            return await Products.updateOne({ _id:id}, { $set:mod})
+            return await Products.find({
+              category: cat
+              }).sort({ price: 1 })
         } catch (error){
             console.log(error);
         }
