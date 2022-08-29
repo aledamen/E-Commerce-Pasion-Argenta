@@ -12,7 +12,7 @@ import { sendMe } from '../store/user';
 import { Alert, Snackbar } from '@mui/material';
 import { useState } from 'react';
 import { subtotal } from '../utils/utils';
-import StripeCheckout from "react-stripe-checkout";
+import CheckOut from './CheckOut';
 
 const Top = styled(Box)(({ theme }) => ({
     fontWeight: "300",
@@ -63,7 +63,8 @@ const PriceDetail = styled(Box)(({ theme }) => ({
 const ProductAmountContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  marginBottom: "20px",
+  justifyContent: "center",
+  marginBottom: "10px",
 }))
 
 const Summary = styled(Box)(({ theme }) => ({
@@ -80,7 +81,7 @@ const SummaryItem = styled(Box)(({ theme }) => ({
     justifyContent: "space-between",
 }))
 
-const ButtonCheckOut = styled("button")(({ theme }) => ({
+const ButtonCheckOut = styled(Button)(({ theme }) => ({
   width: "100%",
   padding: "10px",
   backgroundColor: theme.palette.primary.main,
@@ -98,21 +99,23 @@ const Cart = () => {
   const [open, setOpen] = useState(false);
 
   const handleAddProductCart = (id, amount) => {
-    axios.put(`api/users/modifycart/${user._id}`, {pid:id, amount:amount+1}).then(()=>dispatch(sendMe()))
+    axios.put(`api/users/addtocart/${user._id}`, {pid:id, amount:1}).then(()=>dispatch(sendMe()))
   }
   
-  const handleRemoveProductCart = (id, amount) => {
+  const handleReduceProductCart = (id, amount) => {
     if (amount === 1) {
-      axios.put(`api/users/removefromcart/${user._id}`, { pid: id }).then(() => dispatch(sendMe()))
-      setOpen(true)
+     return setOpen(true)
     } 
-    axios.put(`api/users/modifycart/${user._id}`, {pid:id, amount:amount-1}).then(()=>dispatch(sendMe()))
+    axios.put(`api/users/addtocart/${user._id}`, {pid:id, amount:-1}).then(()=>dispatch(sendMe()))
+  }
+
+  const handleRemoveProductCart = (id) => {
+    axios.put(`api/users/removefromcart/${user._id}`, {pid:id}).then(()=>dispatch(sendMe()))
   }
 
   const handleClose = () => {
     setOpen(false);
   };
-
   return (
       <Box sx={{padding:'20px'}}>
         <Typography sx={{fontWeight: "300", textAlign:'center', fontSize:'30px'}}>Your Cart</Typography>
@@ -135,16 +138,17 @@ const Cart = () => {
                 <Details>
                   <Box sx={{fontSize:'15px'}}>
                     <b>Product:</b> {product.name}
-                  </Box>
+                      </Box>
+                      <Box><Button variant="contained" sx={{margin: '5px'}} onClick={()=>handleRemoveProductCart(product._id)}>Remove</Button></Box>
                 </Details>
               </Box>
               <PriceDetail>
                 <ProductAmountContainer>
-                <RemoveIcon onClick={()=>handleRemoveProductCart(product._id, product.amount)} sx={{cursor:"pointer"} }/>
+                <RemoveIcon onClick={()=>handleReduceProductCart(product._id, product.amount)} sx={{cursor:"pointer"} }/>
                       <Box sx={{fontSize:'24px', margin:'5px'}}>{product.amount}</Box>
                       <AddIcon onClick={()=>handleAddProductCart(product._id, product.amount)} sx={{ cursor: "pointer" }} />
                 </ProductAmountContainer>
-                  <Box sx={{fontSize:'20px'}}>$ {product.price}</Box>
+                    <Box sx={{ fontSize: '20px' }}>$ {product.price}</Box>
               </PriceDetail>
             </Box>)
              })}         
@@ -163,28 +167,17 @@ const Cart = () => {
               <span>Total</span>
               <span>$ {subtotal(cart)}</span>
             </SummaryItem>
-            <ButtonCheckOut>CHECKOUT NOW</ButtonCheckOut>
+             <CheckOut/>
         </Summary>
-        {/* <StripeCheckout
-              name=""
-              image=""
-              billingAddress
-              shippingAddress
-              description={`Your total is $${cart.total}`}
-              amount={cart.total * 100}
-              // token={onToken}
-              // stripeKey={KEY}
-            >
-              <Button>CHECKOUT NOW</Button>
-            </StripeCheckout> */}
       </Bottom>
       <Snackbar
         open={open}
-        autoHideDuration={3000}
+        autoHideDuration={5000}
         onClose={handleClose}
       >
-        <Alert severity="success">Product Removed</Alert>
-        </Snackbar>
+        <Alert severity="warning">You can buy from 1un, click on remove if you want to delete the product</Alert>
+      </Snackbar>
+      
       </Box>
   );
 };

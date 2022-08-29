@@ -91,7 +91,6 @@ class UserService {
     }
   }
 
-
   static async findInCart(id, pid) {
     try {
       return await Users.find({ _id: ObjectId(id), "cart._id": ObjectId(pid) });
