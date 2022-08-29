@@ -1,6 +1,5 @@
 const Products = require("../models/Products");
 const Users = require("../models/Users");
-const Products = require("../models/Products")
 const ObjectId = require("mongodb").ObjectId;
 
 class UserService {
@@ -31,7 +30,7 @@ class UserService {
 
     static async addToCart (id,{pid, amount}) {
         try{
-            const product = await Products.findById(pid, { name: 1, description: 1, img: 1 })
+            const product = await Products.findById(pid, { name: 1, description: 1, img: 1, price:1 })
             
                 return  Users.updateOne(
                     { _id: id },
@@ -40,7 +39,8 @@ class UserService {
                         cart: {
                           _id: product._id,
                           name: product.name,
-                          img: product.img,
+                            img: product.img,
+                          price:product.price,
                           amount: amount
                         },
                       },
@@ -50,7 +50,7 @@ class UserService {
             console.log(error);
         }
     }
-    static async removeFromCart (id, pid) {
+    static async removeFromCart(id, pid) {
         try{
                 return await Users.updateOne({'_id': ObjectId(id)}, 
                 {$pull:{cart:{'_id':  ObjectId(pid)}}})
