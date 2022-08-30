@@ -9,6 +9,9 @@ import Cart from "./components/Cart";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sendMe } from "./store/user";
+import CheckOutMessagge from "./components/CheckOutMessagge";
+import Search from "./components/Search";
+import Favorites from "./components/Favorites";
 
 
 
@@ -34,6 +37,9 @@ function App() {
         <Route path='/login' element={<LogIn />} />
         <Route path='/profile' element={<Profile />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path='/checkoutmessagge' element={<CheckOutMessagge />} />
+        <Route path='/search/:search' element={<Search />} />
+        <Route path='/favorites' element={<Favorites/>} />
       </Routes>
     </div>
    );
