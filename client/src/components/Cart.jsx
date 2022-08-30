@@ -97,7 +97,9 @@ const Cart = () => {
   const dispatch = useDispatch()
   const cart = user.cart
   const [open, setOpen] = useState(false);
-
+  const cartNoLogued = JSON.parse(localStorage.getItem('cart'))
+  const cartToMap = user.cart || cartNoLogued
+  
   const handleAddProductCart = (id, amount) => {
     axios.put(`api/users/addtocart/${user._id}`, {pid:id, amount:1}).then(()=>dispatch(sendMe()))
   }
@@ -116,20 +118,22 @@ const Cart = () => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  
   return (
       <Box sx={{padding:'20px'}}>
         <Typography sx={{fontWeight: "300", textAlign:'center', fontSize:'30px'}}>Your Cart</Typography>
       <Top>
           <TopButton onClick={()=>navigate("/")}>Continue Shopping</TopButton>
           <Box>
-            <TopText>Shopping Bag({user.cart?.length})</TopText>
+            <TopText>Shopping Bag({cartToMap?.length})</TopText>
             <TopText>Your Favorites(0)</TopText>
           </Box>
           <TopButton type="filled">CHECKOUT NOW</TopButton>
         </Top>
       <Bottom sx={{ flexDirection:{xs:'column', md:'row'}}}> 
         <Box sx={{width:'70%'}}>
-            {user.cart?.map((product, i) => {
+            {cartToMap?.map((product, i) => {
               return (
                 <Box key={i} sx={{display: "flex",
                 justifyContent: "space-between", margin:'5px'}}>
@@ -157,7 +161,7 @@ const Cart = () => {
             <Typography>ORDER SUMMARY</Typography>
             <SummaryItem>
               <span>Subtotal</span>
-              <span>$ {subtotal(cart) }</span>
+              <span>$ {subtotal(cartToMap) }</span>
             </SummaryItem>
             <SummaryItem>
               <span>Estimated Shipping</span>
@@ -165,9 +169,9 @@ const Cart = () => {
             </SummaryItem>
             <SummaryItem style={{fontWeight:500, fontSize:"24px"}}>
               <span>Total</span>
-              <span>$ {subtotal(cart)}</span>
+              <span>$ {subtotal(cartToMap)}</span>
             </SummaryItem>
-             <CheckOut/>
+          <CheckOut total={subtotal(cartToMap)} />
         </Summary>
       </Bottom>
       <Snackbar

@@ -4,13 +4,15 @@ import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import axios from "axios";
 import { ProductsCards } from "../commons/ProductsCard";
+import { useParams } from "react-router";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 const Grid = () => {
   const [products, setProducts] = useState([]);
-
+  const params = useParams()
+  
   useEffect(() => {
     axios
       .get("/api/products/all")

@@ -5,6 +5,13 @@ export const subtotal = (cart) => {
     return total
 }
 
+export const saveToLocalStorage = (info) => {
+    let data = { ...info, amount: 1 }
+    let cart = []
+    cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push(data)
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
 export const userOptions = [
   {
     title: "Mi carrito",
@@ -62,3 +69,4 @@ export const adminOptions = [
       buttom: "Eliminar",
     },
   ];
+

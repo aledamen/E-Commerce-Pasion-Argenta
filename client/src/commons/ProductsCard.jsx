@@ -3,23 +3,32 @@ import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart, sendMe } from "../store/user";
 import { Alert, Snackbar } from "@mui/material";
+import { saveToLocalStorage } from "../utils/utils";
 
 export const ProductsCards = ({ props }) => {
-  const [open, setOpen] = useState(false);
-  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user)
+  const [openAddCart, setOpenAddCart] = useState(false);
+  const [openAddFavorites, setOpenAddFavorites] = useState(false);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleAddCart = () => {
-    setOpen(true);
-    dispatch(addToCart({ pid: props._id, amount: 1 })).then(() =>
-      dispatch(sendMe())
-    );
-  };
+    setOpenAddCart(true)
+    user.username ? dispatch(addToCart({pid: props._id, amount:1})).then(()=>dispatch(sendMe())) : saveToLocalStorage(props)
+  }
+  const handleAddFavorites = () => {
+    setOpenAddFavorites(true)
+    dispatch(addToCart({pid: props._id, amount:1})).then(()=>dispatch(sendMe()))
+  }
+
   const handleCloseAlert = () => {
-    setOpen(false);
+    setOpenAddCart(false);
+    setOpenAddFavorites(false)
   };
 
   return (
@@ -43,25 +52,40 @@ export const ProductsCards = ({ props }) => {
           <div className="d-flex flex-row-reverse">
             <h5 style={{ color: "black" }}>
               {" "}
-              ${props.price}
+              <span style={{marginRight:'20px'}}>${props.price}</span>
               <span>
                 <IconButton
                   onClick={handleAddCart}
                   color="default"
                   aria-label="add to shopping cart"
                 >
-                  <AddShoppingCartIcon fontSize="medium" />
+                  <AddShoppingCartIcon  fontSize="medium" />
+                </IconButton>
+                <IconButton
+                  onClick={handleAddFavorites}
+                  color="default"
+                  aria-label="add to shopping cart"
+                >
+                  <FavoriteIcon  fontSize="medium" />
                 </IconButton>
               </span>
             </h5>
           </div>
         </Card.Body>
         <Snackbar
-          open={open}
-          autoHideDuration={3000}
-          onClose={handleCloseAlert}
-        >
-          <Alert severity="success">Product added to cart</Alert>
+        open={openAddCart}
+        autoHideDuration={3000}
+        onClose={handleCloseAlert}
+      >
+        <Alert severity="success">Product added to Cart</Alert>
+        </Snackbar>
+        <Snackbar
+        open={openAddFavorites}
+        autoHideDuration={3000}
+        onClose={handleCloseAlert}
+      >
+        <Alert severity="success">Product added to Favorites</Alert>
+
         </Snackbar>
       </Card>
     </>

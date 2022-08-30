@@ -1,14 +1,6 @@
 import * as React from 'react'
 import { styled, alpha } from '@mui/material/styles'
-import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
-import InputBase from '@mui/material/InputBase'
-import Badge from '@mui/material/Badge'
-import MenuItem from '@mui/material/MenuItem'
-import Menu from '@mui/material/Menu'
+import {AppBar, Box, Toolbar, IconButton, Typography, InputBase, Badge, Menu, MenuItem, Avatar} from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import SearchIcon from '@mui/icons-material/Search'
 import AccountCircle from '@mui/icons-material/AccountCircle'
@@ -16,9 +8,9 @@ import MailIcon from '@mui/icons-material/Mail'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import MoreIcon from '@mui/icons-material/MoreVert'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Avatar } from '@mui/material'
 import { useState } from 'react'
 import { signUpRequest, LogOutRequest, sendMe } from '../store/user'
 
@@ -87,13 +79,16 @@ export default function Navbar() {
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log('esta es search', search)
+        navigate(`/search/${search}`)
     }
     const handleCart = (e) => {
         dispatch(sendMe()).then(() => navigate('/cart'))
     }
     const handleLogOut = (e) => {
         dispatch(LogOutRequest()).then(() => navigate('/'))
+    }
+    const handleFavorites = (e) => {
+        dispatch(sendMe()).then(() => navigate('/favorites'))
     }
 
     const menuId = 'primary-search-account-menu'
@@ -167,12 +162,12 @@ export default function Navbar() {
                 <p>Cart</p>
             </MenuItem>
             <MenuItem>
-                <IconButton size="large" aria-label="show 0 new mails" color="inherit">
+                <IconButton onClick={handleFavorites} size="large" aria-label="show 0 new mails" color="inherit">
                     <Badge badgeContent={0} color="error">
-                        <MailIcon />
+                        <FavoriteIcon />
                     </Badge>
                 </IconButton>
-                <p>Messages</p>
+                <p>Favorites</p>
             </MenuItem>
             <MenuItem>
                 <IconButton size="large" aria-label="show 0 new notifications" color="inherit">
@@ -264,7 +259,7 @@ export default function Navbar() {
                         </IconButton>
                         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                             <Badge badgeContent={0} color="error">
-                                <MailIcon />
+                                <FavoriteIcon onClick={handleFavorites} />
                             </Badge>
                         </IconButton>
                         <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
