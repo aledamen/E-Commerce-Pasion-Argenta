@@ -10,11 +10,13 @@ import { Alert, Snackbar } from "@mui/material";
 import AddCart from "../hooks/AddCart";
 import { useDispatch } from "react-redux";
 import { addToCart, sendMe } from "../store/user";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 export const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
-  const [open, setOpen] = useState(false);
+  const [openCart, setOpenCart] = useState(false);
+  const [openFavorites, setOpenFavorites] = useState(false);
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -25,11 +27,16 @@ export const ProductDetails = () => {
   }, []);
 
   const handleAddCart = () => {
-    setOpen(true)
+    setOpenCart(true)
+    dispatch(addToCart({ pid: product[0]._id, amount: 1 })).then(() => dispatch(sendMe()))
+  }
+  const handleAddFavorites = () => {
+    setOpenFavorites(true)
     dispatch(addToCart({ pid: product[0]._id, amount: 1 })).then(() => dispatch(sendMe()))
   }
   const handleClose = () => {
-    setOpen(false);
+    setOpenCart(false);
+    setOpenFavorites(false)
   };
 
   return (
@@ -68,6 +75,12 @@ export const ProductDetails = () => {
                         >
                           <AddShoppingCartIcon fontSize="large" />
                         </IconButton >
+                        <IconButton onClick={handleAddFavorites}
+                          color="primary"
+                          aria-label="add to shopping cart"
+                        >
+                          <FavoriteIcon fontSize="large" />
+                        </IconButton >
                       </span>
                     </h4>
                   </div>
@@ -81,11 +94,18 @@ export const ProductDetails = () => {
         <></>
       )}
       <Snackbar
-        open={open}
+        open={openCart}
         autoHideDuration={3000}
         onClose={handleClose}
       >
-        <Alert severity="success">Product added to cart</Alert>
+        <Alert severity="success">Product added to Cart</Alert>
+      </Snackbar>
+      <Snackbar
+        open={openFavorites}
+        autoHideDuration={3000}
+        onClose={handleClose}
+      >
+        <Alert severity="success">Product added to Favorites</Alert>
         </Snackbar>
     </>
   );
