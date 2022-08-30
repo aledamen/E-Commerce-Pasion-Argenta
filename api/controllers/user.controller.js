@@ -103,6 +103,16 @@ static async findInCart (req, res) {
     }
 }
 
+static async checkoutOk (req, res) {
+    try{
+        const user = await UserService.checkoutOk(req.params.id, req.body.total)
+        if (!user) return res.status(404).send('User not found')
+        return res.status(200).send(user)     
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 static async deleteUser (req,res) {
     try{
         const user = await UserService.deleteUser(req.params.id)
