@@ -1,23 +1,17 @@
-import React from 'react'
+import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { ProductsCards } from './ProductsCard';
+import { ProductsCards } from "./ProductsCard";
 
-
-//hola
-
-export const HorizontalScroll = ({props}) => {
-
-   
+export const HorizontalScroll = ({ props }) => {
   return (
-        <Container bsPrefix="container-fluid overflow-auto">
-            <Row bsPrefix="row flex-nowrap">
-            {props.map((product,index) => (
-                
-          <Col key={`product-${index}`} >
-            <ProductsCards key={index} props = {product} />
-            </Col>
+    <Container bsPrefix="container-fluid overflow-auto">
+      <Row bsPrefix="row flex-nowrap">
+        {props.map((product, index) => (
+          <Col key={`product-${index}`}>
+            <ProductsCards key={index} props={product} />
+          </Col>
         ))}
       </Row>
-      </Container>
-  )
-}
+    </Container>
+  );
+};

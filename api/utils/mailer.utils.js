@@ -14,13 +14,13 @@ const sendEmail= (user, msgCode, order)=> {
   const options = {
     from: "pasionargenta@outlook.com",
     to: user.email,
-    subject: msgCodes(msgCode, user).subject,
-    text:  msgCodes(msgCode, user).body,
+    subject: msgCodes(msgCode, user, order).subject,
+    text:  msgCodes(msgCode, user, order).body,
   };
 
   transporter.sendMail(options, function (err, info) {
     if (err) {
-      console.log(error);
+      console.log(err);
       return;
     }
     console.log("sent: ", info.response);

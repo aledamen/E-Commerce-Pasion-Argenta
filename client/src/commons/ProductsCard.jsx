@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -25,6 +25,7 @@ export const ProductsCards = ({ props }) => {
     setOpenAddFavorites(true)
     dispatch(addToCart({pid: props._id, amount:1})).then(()=>dispatch(sendMe()))
   }
+
   const handleCloseAlert = () => {
     setOpenAddCart(false);
     setOpenAddFavorites(false)
@@ -84,6 +85,7 @@ export const ProductsCards = ({ props }) => {
         onClose={handleCloseAlert}
       >
         <Alert severity="success">Product added to Favorites</Alert>
+
         </Snackbar>
       </Card>
     </>

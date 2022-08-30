@@ -1,13 +1,12 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 import Card from "react-bootstrap/Card";
 import { Col, Row } from "react-bootstrap";
 import IconButton from "@mui/material/IconButton";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Alert, Snackbar } from "@mui/material";
-import AddCart from "../hooks/AddCart";
 import { useDispatch } from "react-redux";
 import { addToCart, sendMe } from "../store/user";
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -18,6 +17,7 @@ export const ProductDetails = () => {
   const [openCart, setOpenCart] = useState(false);
   const [openFavorites, setOpenFavorites] = useState(false);
   const dispatch = useDispatch()
+
 
   useEffect(() => {
     axios
@@ -34,6 +34,7 @@ export const ProductDetails = () => {
     setOpenFavorites(true)
     dispatch(addToCart({ pid: product[0]._id, amount: 1 })).then(() => dispatch(sendMe()))
   }
+
   const handleClose = () => {
     setOpenCart(false);
     setOpenFavorites(false)
@@ -69,11 +70,13 @@ export const ProductDetails = () => {
                     <h4>
                       Precio : ${product[0].price}{" "}
                       <span>
-                        <IconButton onClick={handleAddCart}
+                        <IconButton
+                          onClick={handleAddCart}
                           color="primary"
                           aria-label="add to shopping cart"
                         >
                           <AddShoppingCartIcon fontSize="large" />
+
                         </IconButton >
                         <IconButton onClick={handleAddFavorites}
                           color="primary"
@@ -81,6 +84,8 @@ export const ProductDetails = () => {
                         >
                           <FavoriteIcon fontSize="large" />
                         </IconButton >
+
+                
                       </span>
                     </h4>
                   </div>
@@ -107,6 +112,7 @@ export const ProductDetails = () => {
       >
         <Alert severity="success">Product added to Favorites</Alert>
         </Snackbar>
+
     </>
   );
 };
