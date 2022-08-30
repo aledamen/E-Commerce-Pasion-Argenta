@@ -4,10 +4,12 @@ import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import axios from "axios";
 import { ProductsCards } from "../commons/ProductsCard";
+import { useParams } from "react-router";
 
 const Grid = () => {
   const [products, setProducts] = useState([]);
-
+  const params = useParams()
+  
   useEffect(() => {
     axios
       .get("/api/products/all")
