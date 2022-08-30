@@ -18,8 +18,12 @@ router.get("/all/", UserController.getAllUsers);
 //buscar un usuario por id
 router.get("/:id", UserController.getUser);
 
-//buscar favoritos favoritos
-router.get("/favorites/:id", UserController.getfavorites);
+//buscar favoritos por id
+router.get("/favorites/:id", UserController.getFavorites);
+
+
+//agregar favoritos
+router.put("/favorites/", UserController.addFavorites);
 
 //ruta para modificar un usuario
 router.put("/modify/", UserController.userModify)

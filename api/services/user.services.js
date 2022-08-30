@@ -15,6 +15,15 @@ class UserService {
     }
   }
 
+   static async addFavorites(id,fav) {
+    try {
+     await Users.updateOne({ _id:id },{ $push: { favorites: fav } } );
+     return Products.findOne({_id : fav})
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
   static async getAllUsers() {
     try {
       return await Users.find({}).sort({ username: 1 });
@@ -29,7 +38,6 @@ class UserService {
       console.log(error);
     }
   }
-  
   static async userModify(body) {
     try {
       return await Users.updateOne({ _id: body.id }, { $set: body.mod });
@@ -51,8 +59,10 @@ class UserService {
 
   static async addToCart(id, { pid, amount }) {
     try {
+
       const user = await Users.find({_id: ObjectId(id),"cart._id": ObjectId(pid),});
       const product = await Products.findById(pid, {name: 1, description: 1, img: 1, price:1});
+
       
       if (user.length > 0) {
         return Users.updateOne(

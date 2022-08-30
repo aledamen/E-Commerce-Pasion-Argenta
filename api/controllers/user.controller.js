@@ -42,11 +42,22 @@ static async addToCart (req, res) {
     }
     }
     
-static async getfavorites (req,res) {
+
+static async getFavorites (req,res) {
     try{
         const user = await UserService.getUser(req.params.id)
         if (!user) return res.status(404).send('User not found') 
         return res.send(user.favorites)
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+static async addFavorites (req,res) {
+    try{
+        const user = await UserService.addFavorites(req.body.id,req.body.favorites)
+        if (!user) return res.status(404).send('User not found') 
+        return res.send(user)
     } catch (error) {
         console.log(error);
     }
