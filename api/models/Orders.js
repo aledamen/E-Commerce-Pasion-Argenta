@@ -2,9 +2,17 @@ const mongoose = require('mongoose')
 
 const OrdersSchema = new mongoose.Schema(
     {
+        userId: {
+            type: String,
+
+        },
         order: {
             type: Array,
             default: [],
+        },
+        total: {
+            type: Number,
+
         },
     },
     { timestamps: true }
