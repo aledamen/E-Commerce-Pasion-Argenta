@@ -9,6 +9,7 @@ import Cart from "./components/Cart";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { sendMe } from "./store/user";
+import Favorites from "./components/Favorites";
 
 
 
@@ -28,6 +29,7 @@ function App() {
     <div>
       <Navbar />
       <Routes>
+      <Route path="/favorites" element={<Favorites />} />
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path='/' element={<Home />} />
         <Route path='/signup' element={<SignUp />} />
