@@ -16,6 +16,15 @@ class UserService {
     }
   }
 
+   static async addFavorites(id,fav) {
+    try {
+     await Users.updateOne({ _id:id },{ $push: { favorites: fav } } );
+     return Products.findOne({_id : fav})
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
   static async getAllUsers() {
     try {
       return await Users.find({}).sort({ username: 1 });
@@ -62,6 +71,7 @@ class UserService {
         img: 1,
         price: 1,
       });
+
 
       if (user.length > 0) {
         return Users.findOneAndUpdate(
