@@ -1,14 +1,15 @@
 const Products = require("../models/Products");
 const Users = require("../models/Users");
+const Orders = require("../models/Orders");
 const ObjectId = require("mongodb").ObjectId;
-const sendEmail = require("../utils/mailer.utils")
+const sendEmail = require("../utils/mailer.utils");
 
 class UserService {
   static async createUser(body) {
     try {
       const user = new Users(body);
-      sendEmail(user, 0)
-      console.log("++++", user)
+      sendEmail(user, 0);
+      console.log("++++", user);
       return await user.save();
     } catch (error) {
       console.log(error);
@@ -29,7 +30,7 @@ class UserService {
       console.log(error);
     }
   }
-  
+
   static async userModify(body) {
     try {
       return await Users.updateOne({ _id: body.id }, { $set: body.mod });
@@ -51,16 +52,25 @@ class UserService {
 
   static async addToCart(id, { pid, amount }) {
     try {
-      const user = await Users.find({_id: ObjectId(id),"cart._id": ObjectId(pid),});
-      const product = await Products.findById(pid, {name: 1, description: 1, img: 1, price:1});
-      
+      const user = await Users.find({
+        _id: ObjectId(id),
+        "cart._id": ObjectId(pid),
+      });
+      const product = await Products.findById(pid, {
+        name: 1,
+        description: 1,
+        img: 1,
+        price: 1,
+      });
+
       if (user.length > 0) {
-        return Users.updateOne(
+        return Users.findOneAndUpdate(
           { _id: ObjectId(id), "cart._id": ObjectId(pid) },
-          { $inc: { "cart.$.amount": amount } }
+          { $inc: { "cart.$.amount": amount } },
+          { new: true }
         );
       } else {
-        return Users.updateOne(
+        return Users.findOneAndUpdate(
           { _id: id },
           {
             $push: {
@@ -72,7 +82,8 @@ class UserService {
                 amount: amount,
               },
             },
-          }
+          },
+          { new: true }
         );
       }
     } catch (error) {
@@ -110,6 +121,42 @@ class UserService {
     }
   }
 
+  static async checkoutOk(id, total) {
+    try {
+      const cartOk = await Users.findById(id, { cart: 1, _id: 0 });
+      const cartUpdate = await Users.updateOne(
+        { _id: ObjectId(id) },
+        { $set: { cart: [] } }
+      );
+      const orderOk = await Orders.create({ order: cartOk.cart });
+
+      let orderUpdate = await Orders.updateOne(
+        { _id: ObjectId(orderOk._id) },
+        { $set: { userId: id } },
+      );
+      orderUpdate = await Orders.updateOne(
+        { _id: ObjectId(orderOk._id) },
+        { $set: { total: total } }
+      );
+
+     const result = await Users.findOneAndUpdate(
+        { _id: id },
+        {
+          $push: {
+            orders: orderOk,
+          },
+        },
+        { new: true }
+      );
+      sendEmail(result, 1, orderOk._id);
+      return result
+
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
   static async deleteUser(id) {
     try {
       return await Users.deleteOne({ _id: id });
@@ -118,5 +165,5 @@ class UserService {
     }
   }
 }
- 
-module.exports = UserService
+
+module.exports = UserService;
