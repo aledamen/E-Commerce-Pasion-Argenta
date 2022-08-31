@@ -5,13 +5,37 @@ export const subtotal = (cart) => {
     return total
 }
 
-export const saveToLocalStorage = (info) => {
+export const saveToLocalStorage = (info, string) => {
+    let existCart = JSON.parse(localStorage.getItem('cart'))
+    let newCart = verifyIncludeInLocalStorage(existCart, info, string)
+    if (newCart) return localStorage.setItem('cart', JSON.stringify(newCart))
     let data = { ...info, amount: 1 }
     let cart = []
     cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart.push(data)
     localStorage.setItem('cart', JSON.stringify(cart));
 }
+
+const verifyIncludeInLocalStorage = (cart, info, string) => {
+    if (cart?.filter((product) => product._id === info._id).length) {
+        let newProduct = cart?.filter((product) => {
+            if (product._id === info._id) return product
+        })
+        if (string === 'add') {
+            newProduct.length && cart.splice(cart.indexOf(newProduct[0]),1,{...newProduct[0], amount:newProduct[0]?.amount+1})
+        } else if (string === 'reduce') {
+            newProduct.length && cart.splice(cart.indexOf(newProduct[0]),1,{...newProduct[0], amount:newProduct[0]?.amount-1})
+        } else if (string === 'remove') {
+            newProduct.length && cart.splice(cart.indexOf(newProduct[0]),1)
+        }
+        return cart
+    }
+}
+
+const addCartLocalStorageToUser = (cartLocalStorage) => {
+    
+}
+
 export const userOptions = [
   {
     title: "Mi carrito",

@@ -7,7 +7,7 @@ import { useLocation, useParams } from 'react-router'
 import { ProductsCards } from '../commons/ProductsCard'
 
 const Search = () => {
-    const param = useParams.search
+    const param = useParams().search
     const [search, setSearch] = useState([])
 
     useEffect(() => {
