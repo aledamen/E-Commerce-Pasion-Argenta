@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, sendMe } from "../store/user";
 import { Alert, Snackbar } from "@mui/material";
 import { saveToLocalStorage } from "../utils/utils";
+
 
 export const ProductsCards = ({ props }) => {
   const user = useSelector((state) => state.user)
@@ -19,11 +20,12 @@ export const ProductsCards = ({ props }) => {
 
   const handleAddCart = () => {
     setOpenAddCart(true)
-    user.username ? dispatch(addToCart({pid: props._id, amount:1})).then(()=>dispatch(sendMe())) : saveToLocalStorage(props)
+    if (user.username) dispatch(addToCart({pid: props._id, amount:1}))
+    else saveToLocalStorage(props)
   }
   const handleAddFavorites = () => {
     setOpenAddFavorites(true)
-    dispatch(addToCart({pid: props._id, amount:1})).then(()=>dispatch(sendMe()))
+    // dispatch(addToCart({pid: props._id, amount:1}))
   }
 
   const handleCloseAlert = () => {
