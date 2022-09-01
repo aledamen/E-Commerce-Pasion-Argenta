@@ -55,6 +55,7 @@ export default function Navbar() {
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
     const cartNoLogued = JSON.parse(localStorage.getItem('cart'))
     const lengthCartIcon = user.cart ? user.cart.length : cartNoLogued ? cartNoLogued.length : 0
+    const lengthFavIcon = user.favorites && user.favorites.length 
     const isMenuOpen = Boolean(anchorEl)
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
@@ -113,9 +114,6 @@ export default function Navbar() {
                     <Link to="/profile" style={{ textDecoration: 'none' }}>
                         <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
                     </Link>
-                    <Link to="/profile" style={{ textDecoration: 'none' }}>
-                        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-                    </Link>
                     <div
                         onClick={handleLogOut}
                         style={{ textDecoration: 'none', color: 'red', border: 'none', backgroundColor: 'none' }}
@@ -153,29 +151,21 @@ export default function Navbar() {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem>
-                <IconButton onClick={handleCart} size="large" aria-label="show 0 new mails" color="inherit">
+            <MenuItem onClick={handleCart}>
+                <IconButton  size="large" aria-label="show 0 new mails" color="inherit">
                     <Badge badgeContent={lengthCartIcon} color="error">
                         <ShoppingCartIcon/>
                     </Badge>
                 </IconButton>
                 <p>Cart</p>
             </MenuItem>
-            <MenuItem>
-                <IconButton onClick={handleFavorites} size="large" aria-label="show 0 new mails" color="inherit">
+            <MenuItem onClick={handleFavorites}>
+                <IconButton  size="large" aria-label="show 0 new mails" color="inherit">
                     <Badge badgeContent={0} color="error">
                         <FavoriteIcon />
                     </Badge>
                 </IconButton>
                 <p>Favorites</p>
-            </MenuItem>
-            <MenuItem>
-                <IconButton size="large" aria-label="show 0 new notifications" color="inherit">
-                    <Badge badgeContent={0} color="error">
-                        <NotificationsIcon />
-                    </Badge>
-                </IconButton>
-                <p>Notifications</p>
             </MenuItem>
             <MenuItem onClick={handleProfileMenuOpen}>
                 <IconButton
@@ -258,13 +248,8 @@ export default function Navbar() {
                             </Badge>
                         </IconButton>
                         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={0} color="error">
+                            <Badge badgeContent={lengthFavIcon} color="error">
                                 <FavoriteIcon onClick={handleFavorites} />
-                            </Badge>
-                        </IconButton>
-                        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-                            <Badge badgeContent={0} color="error">
-                                <NotificationsIcon />
                             </Badge>
                         </IconButton>
                         <IconButton
