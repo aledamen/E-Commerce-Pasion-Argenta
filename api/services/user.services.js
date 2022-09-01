@@ -18,8 +18,14 @@ class UserService {
 
    static async addFavorites(id,fav) {
     try {
-     await Users.updateOne({ _id:id },{ $push: { favorites: fav } } );
-     return Products.findOne({_id : fav})
+      const user = await Users.find({_id: ObjectId(id),"favorites._id": ObjectId(fav),});
+      const product = await Products.findById(fav, {name: 1, description: 1, img: 1, price: 1,});
+
+      if (user.length > 0) {
+        return
+      } 
+    await Users.updateOne({ _id:id },{ $push: { favorites: product } } );
+    return Products.findOne({_id : fav})
     } catch (error) {
       console.log(error);
     }
@@ -105,7 +111,8 @@ class UserService {
     try {
       return await Users.updateOne(
         { _id: ObjectId(id) },
-        { $pull: { cart: { _id: ObjectId(pid) } } }
+        { $pull: { cart: { _id: ObjectId(pid) } } },
+        { new: true }
       );
     } catch (error) {
       console.log(error);
