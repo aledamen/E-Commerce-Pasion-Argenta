@@ -3,16 +3,15 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router";
 import Card from "react-bootstrap/Card";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import IconButton from "@mui/material/IconButton";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { Alert, Rating, Snackbar } from "@mui/material";
+import { Alert, Snackbar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, sendMe } from "../store/user";
+import { addToCart } from "../store/user";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Container } from "@mui/system";
 import { saveToLocalStorage } from "../utils/utils";
-import ReviewRating from "../components/ReviewRating";
 import Reviews from "../components/Reviews";
 
 

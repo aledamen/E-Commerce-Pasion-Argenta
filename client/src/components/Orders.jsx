@@ -8,7 +8,6 @@ import OrderCard from "../commons/OrderCard";
 const Orders = () => {
  
     const user = useSelector((state) => state.user);
-    console.log(user.orders[0]._id);
     if (!user.orders){
   return (
     <div >
