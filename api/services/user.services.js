@@ -18,14 +18,35 @@ class UserService {
 
    static async addFavorites(id,fav) {
     try {
-      const user = await Users.find({_id: ObjectId(id),"favorites._id": ObjectId(fav),});
-      const product = await Products.findById(fav, {name: 1, description: 1, img: 1, price: 1,});
+    //   const user = await Users.find({_id: ObjectId(id),"favorites._id": ObjectId(fav)});
+    //   const product = await Products.findById(fav._id, {name: 1, description: 1, img: 1, price: 1});
 
-      if (user.length > 0) {
-        return
-      } 
-    await Users.updateOne({ _id:id },{ $push: { favorites: product } } );
-    return Products.findOne({_id : fav})
+    //   if (user.length > 0) {
+    //     return
+    //   } 
+    // return await Users.findOneAndUpdate({ _id:id },{ $push: { favorites: product } }, { new: true } );
+    // // return Products.findOne({_id : fav})
+    return await Users.findByIdAndUpdate(id,
+      {
+          $addToSet: {
+              favorites: fav,
+          },
+      },
+      { new: true }
+  )
+    
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  static async deleteFavorite(id, pid) {
+    try {
+      return await Users.findOneAndUpdate(
+        { _id: ObjectId(id) },
+        { $pull: { favorites: { _id: pid } } },
+        { new: true }
+      );
     } catch (error) {
       console.log(error);
     }
