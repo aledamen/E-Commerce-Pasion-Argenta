@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { addToCart, sendMe } from "../store/user";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Reviews from "../components/Reviews";
+import ReviewRating from "../components/ReviewRating";
 
 export const ProductDetails = () => {
   const { id } = useParams();

@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "react-bootstrap/Card";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -16,7 +16,7 @@ export const ProductsCards = ({ props }) => {
   const [openAddCart, setOpenAddCart] = useState(false);
   const [openAddFavorites, setOpenAddFavorites] = useState(false);
   const dispatch = useDispatch()
-  const navigate = useNavigate
+
 
   const handleAddCart = () => {
     setOpenAddCart(true)
