@@ -20,11 +20,12 @@ const Search = () => {
     
     return (
         <div>
+             <Typography sx={{ padding:"20px", fontWeight: '300', textAlign: 'center', fontSize: '30px' }}>Busqueda</Typography>
             {param ? (
-                <Container style={{ marginTop: '20px' }}>
+                <Container>
                     <Row>
                         {search?.map((product, index) => (
-                            <Col style={{ marginBottom: '20px' }} key={`product-${index}`}>
+                            <Col style={{marginBottom:"20px", display:"flex", justifyContent:"center"}} key={`product-${index}`}>
                                 <ProductsCards key={index} props={product} />
                             </Col>
                         ))}
