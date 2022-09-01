@@ -12,6 +12,7 @@ import { sendMe } from "./store/user";
 import CheckOutMessagge from "./components/CheckOutMessagge";
 import Search from "./components/Search";
 import Favorites from "./components/Favorites";
+import Orders from "./components/Orders"
 
 
 
@@ -31,6 +32,8 @@ function App() {
     <div>
       <Navbar />
       <Routes>
+
+      <Route path="/orders" element={<Orders />} />
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path='/' element={<Home />} />
         <Route path='/signup' element={<SignUp />} />
