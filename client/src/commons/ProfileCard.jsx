@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
-import FormCreateProduct, { DeleteProduct, EditProduct } from './AdminForm';
+import FormCreateProduct, { DeleteProduct, EditProduct, UsersOptions} from './AdminForm';
 
 
 function ProfileCard({props}) {
@@ -53,6 +53,20 @@ if(user.isAdmin) {
     </Card>
     </div>
   )
+  if(props.title==="Opciones de Usuarios")return (
+    <div>
+ <Card sx={{ minWidth: 275 }} style={{margin:"10px",textAlign: "center" }}>
+      <CardContent>
+        <Typography sx={{ fontSize: 18}} color="text.secondary" gutterBottom>
+          {props.title}
+        </Typography>
+      </CardContent>
+      <CardActions>
+         <UsersOptions/>
+      </CardActions>
+    </Card>
+    </div>
+  )
   } else { return (<Card sx={{ minWidth: 275 }} style={{margin:"10px" }}>
   <CardContent>
     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
@@ -69,7 +83,7 @@ if(user.isAdmin) {
     </Typography>
   </CardContent>
   <CardActions>
-  <Link to={props.buttom=="orders"?"/orders":props.buttom==="cart"?"/cart":"/favorites"}>
+  <Link to={props.buttom==="orders"?"/orders":props.buttom==="cart"?"/cart":"/favorites"}>
     <Button size="small">{props.buttom}</Button>
     </Link>
   </CardActions>
