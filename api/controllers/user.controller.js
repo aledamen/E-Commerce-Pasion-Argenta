@@ -56,7 +56,7 @@ static async getFavorites (req,res) {
 static async addFavorites (req,res) {
     try{
         const user = await UserService.addFavorites(req.body.id,req.body.favorites)
-        if (!user) return res.status(404).send('User not found') 
+        if (!user) return res.status(404).send('User not found/favorite already added') 
         return res.send(user)
     } catch (error) {
         console.log(error);
