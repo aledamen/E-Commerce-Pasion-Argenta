@@ -5,13 +5,37 @@ export const subtotal = (cart) => {
     return total
 }
 
-export const saveToLocalStorage = (info) => {
+export const saveToLocalStorage = (info, string) => {
+    let existCart = JSON.parse(localStorage.getItem('cart'))
+    let newCart = verifyIncludeInLocalStorage(existCart, info, string)
+    if (newCart) return localStorage.setItem('cart', JSON.stringify(newCart))
     let data = { ...info, amount: 1 }
     let cart = []
     cart = JSON.parse(localStorage.getItem('cart')) || [];
     cart.push(data)
     localStorage.setItem('cart', JSON.stringify(cart));
 }
+
+const verifyIncludeInLocalStorage = (cart, info, string) => {
+    if (cart?.filter((product) => product._id === info._id).length) {
+        let newProduct = cart?.filter((product) => {
+            if (product._id === info._id) return product
+        })
+        if (string === 'add') {
+            newProduct.length && cart.splice(cart.indexOf(newProduct[0]),1,{...newProduct[0], amount:newProduct[0]?.amount+1})
+        } else if (string === 'reduce') {
+            newProduct.length && cart.splice(cart.indexOf(newProduct[0]),1,{...newProduct[0], amount:newProduct[0]?.amount-1})
+        } else if (string === 'remove') {
+            newProduct.length && cart.splice(cart.indexOf(newProduct[0]),1)
+        }
+        return cart
+    }
+}
+
+const addCartLocalStorageToUser = (cartLocalStorage) => {
+    
+}
+
 export const userOptions = [
   {
     title: "Mi carrito",
@@ -33,40 +57,22 @@ export const userOptions = [
 
 export const adminOptions = [
     {
-      title: "Agregar Productos",
-      description: "Aqui puede agregar productos a su tienda",
-      buttom: "Agregar",
-      // name : "Nombre del Producto",
-      // description: "Descripcion del producto",
-      // img: "Imagen URL",
-      // price: "Precio del Producto",
-      // stock: "Stock agregado",
-      // category: "Categoria"
+      title: "Crear Productos",
     },
     {
-      title: "Editar Productos",
-      description: "Aqui puede agregar productos a su tienda",
-      buttom: "Editar",
+      title: "Editar Productos"
     },
     {
-      title: "Eliminar Productos",
-      description: "Aqui puede agregar productos a su tienda",
-      buttom: "Eliminar",
+      title: "Eliminar Productos"
     },
     {
-      title: "Usuario a Admin",
-      description: "Aqui puede agregar productos a su tienda",
-      buttom: "Promover",
+      title: "Usuario a Admin"
     },
     {
-      title: "Usuario a Admin",
-      description: "Aqui puede agregar productos a su tienda",
-      buttom: "Promover",
+      title: "Usuario a Admin"
     },
     {
-      title: "Eliminar Usuario",
-      description: "Aqui puede agregar productos a su tienda",
-      buttom: "Eliminar",
+      title: "Eliminar Usuario"
     },
   ];
 

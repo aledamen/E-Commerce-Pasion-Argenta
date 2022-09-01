@@ -7,9 +7,10 @@ import { Col, Row } from "react-bootstrap";
 import IconButton from "@mui/material/IconButton";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Alert, Snackbar } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart, sendMe } from "../store/user";
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import { saveToLocalStorage } from "../utils/utils";
 
 export const ProductDetails = () => {
   const { id } = useParams();
@@ -17,6 +18,7 @@ export const ProductDetails = () => {
   const [openCart, setOpenCart] = useState(false);
   const [openFavorites, setOpenFavorites] = useState(false);
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.user)
 
 
   useEffect(() => {
@@ -28,11 +30,12 @@ export const ProductDetails = () => {
 
   const handleAddCart = () => {
     setOpenCart(true)
-    dispatch(addToCart({ pid: product[0]._id, amount: 1 })).then(() => dispatch(sendMe()))
+    if (user.username) dispatch(addToCart({ pid: product[0]._id, amount: 1 }))
+    else saveToLocalStorage(product[0])
   }
+
   const handleAddFavorites = () => {
     setOpenFavorites(true)
-    dispatch(addToCart({ pid: product[0]._id, amount: 1 })).then(() => dispatch(sendMe()))
   }
 
   const handleClose = () => {

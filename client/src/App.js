@@ -32,8 +32,8 @@ function App() {
     <div>
       <Navbar />
       <Routes>
+
       <Route path="/orders" element={<Orders />} />
-      <Route path="/favorites" element={<Favorites />} />
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path='/' element={<Home />} />
         <Route path='/signup' element={<SignUp />} />

@@ -3,22 +3,18 @@ import {
     Box,
     Button,
     Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
     DialogTitle,
     TextField,
     Typography,
 } from '@mui/material'
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { PaymentInputsWrapper, usePaymentInputs, PaymentInputsContainer } from 'react-payment-inputs'
-import images from 'react-payment-inputs/images'
 import PaymentMethods from '../assets/PaymentMethods.png'
 import CreditCard from '../assets/Credit-Card.png'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import  axios from 'axios'
+import { checkOut } from '../store/user'
+import { setDataCheckout } from '../store/checkout'
 
 const ButtonCheckOut = styled(Button)(({ theme }) => ({
     width: '100%',
@@ -43,6 +39,7 @@ const CheckOut = ({total}) => {
     const [open, setOpen] = useState(false)
     const user = useSelector((state) => state.user)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const {
         register,
         handleSubmit,
@@ -60,11 +57,6 @@ const CheckOut = ({total}) => {
             cvc: '',
         },
     })
-    // const { wrapperProps, getCardImageProps, getCardNumberProps, getExpiryDateProps, getCVCProps } = usePaymentInputs()
-
-    // function handleChange(data) {
-    //     console.log(data)
-    // }
 
     const handleClickOpen = () => {
         user.username || navigate('/login')
@@ -77,7 +69,7 @@ const CheckOut = ({total}) => {
 
     const onSubmit = (data) => {
         setOpen(false)
-        user.username && axios.put(`/api/users/checkoutok/${user._id}`, {total:total}).then(()=>navigate('/checkoutmessagge'))  
+        user.cart[0] && dispatch(checkOut({total:total})).then(()=>dispatch(setDataCheckout(data))).then(()=>navigate('/checkoutmessagge'))  
     }
 
     return (
@@ -243,14 +235,6 @@ const CheckOut = ({total}) => {
                                 </Box>
                             </Box>
                         </Box>
-                        {/* <PaymentInputsWrapper {...wrapperProps} style={{ display: 'flex', width:'50%' }}>
-                            
-                            <svg {...getCardImageProps({ images })} />
-                            <input {...getCardNumberProps()} onChange={() => handleChange()} style={{marginRight:'20px'}} />
-                            <input {...getExpiryDateProps()} onChange={() => handleChange()} style={{marginRight:'20px'}} />
-                            <input {...getCVCProps()} onChange={() => handleChange()} style={{marginRight:'20px'}} />
-                           
-                        </PaymentInputsWrapper> */}
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                         <Button variant="contained" type="submit">
