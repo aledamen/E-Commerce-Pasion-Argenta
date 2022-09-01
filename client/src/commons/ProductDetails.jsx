@@ -6,9 +6,10 @@ import Card from "react-bootstrap/Card";
 import { Col, Row } from "react-bootstrap";
 import IconButton from "@mui/material/IconButton";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Alert, Snackbar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "../store/user";
+import { addToCart, addToFavorites, removeFromFavorites } from "../store/user";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Container } from "@mui/system";
 import { saveToLocalStorage } from "../utils/utils";
@@ -20,6 +21,7 @@ export const ProductDetails = () => {
   const [product, setProduct] = useState({});
   const [openCart, setOpenCart] = useState(false);
   const [openFavorites, setOpenFavorites] = useState(false);
+  const [openRemoveFavorites, setOpenRemoveFavorites] = useState(false);
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user)
 
@@ -39,8 +41,12 @@ export const ProductDetails = () => {
   };
   const handleAddFavorites = () => {
     setOpenFavorites(true);
+    user.username && dispatch(addToFavorites(product[0]))
   };
-
+  const handleRemoveFavorites = () => {
+    setOpenRemoveFavorites(true)
+    user.username && dispatch(removeFromFavorites(product[0]))
+  }
 
   const handleClose = () => {
     setOpenCart(false);
@@ -91,6 +97,13 @@ export const ProductDetails = () => {
                         >
                           <FavoriteIcon fontSize="large" />
                         </IconButton>
+                        <IconButton
+                          onClick={handleRemoveFavorites}
+                          color="primary"
+                          aria-label="add to shopping cart"
+                        >
+                          <DeleteIcon fontSize="large" />
+                        </IconButton>
                       </span>
                     </h4>
                   </div>
@@ -114,6 +127,14 @@ export const ProductDetails = () => {
       >
         <Alert severity="success">Product added to Favorites</Alert>
       </Snackbar>
+      <Snackbar
+        open={openRemoveFavorites}
+        autoHideDuration={3000}
+        onClose={handleClose}
+      >
+        <Alert severity="success">Product removed from Favorites</Alert>
+
+        </Snackbar>
       {product[0] ? (
         <Container>
         <p><Reviews product={product[0].review} /></p>
