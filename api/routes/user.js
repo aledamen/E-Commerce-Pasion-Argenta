@@ -29,7 +29,7 @@ router.put("/favorites/", UserController.addFavorites);
 router.put("/modify/", UserController.userModify)
 
 //ruta para promover a admin
-router.put("/toadmin/", UserController.putToAdmin)
+router.put("/toadmin/:id", UserController.putToAdmin)
 
 router.put('/checkoutok/:id', UserController.checkoutOk)
 
