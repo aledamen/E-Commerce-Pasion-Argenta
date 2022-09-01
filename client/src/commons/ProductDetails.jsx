@@ -13,6 +13,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Container } from "@mui/system";
 import { saveToLocalStorage } from "../utils/utils";
 import Reviews from "../components/Reviews";
+import ReviewRating from "../components/ReviewRating";
 
 
 export const ProductDetails = () => {
