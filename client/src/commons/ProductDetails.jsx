@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router";
 import Card from "react-bootstrap/Card";
-import { Col, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import IconButton from "@mui/material/IconButton";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Alert, Rating, Snackbar } from "@mui/material";
@@ -13,6 +13,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Container } from "@mui/system";
 import { saveToLocalStorage } from "../utils/utils";
 import ReviewRating from "../components/ReviewRating";
+import Reviews from "../components/Reviews";
 
 
 export const ProductDetails = () => {
@@ -101,6 +102,7 @@ export const ProductDetails = () => {
           </div>
           
         </div>
+
       ) : (
         <></>
       )}
@@ -114,13 +116,11 @@ export const ProductDetails = () => {
       >
         <Alert severity="success">Product added to Favorites</Alert>
       </Snackbar>
-      <Container>
-     <ReviewRating/>
-  
-      </Container>
-       
-     
-      
+      {product[0] ? (
+        <Container>
+        <p><Reviews product={product[0].review} /></p>
+        </Container>
+        ):(<div></div>)}
     </>
   );
 };

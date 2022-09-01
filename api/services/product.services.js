@@ -29,7 +29,7 @@ class ProductService {
 
     static async findByName(name) {
         try {
-            return await Products.find({name:{$regex:name, '$options' : 'i'}}) //case insensitive
+            return await Products.find({ $or: [{name:{$regex:name, '$options' : 'i'}},{description:{$regex:name, '$options' : 'i'}}, {category:{$regex:name, '$options' : 'i'}} ]})
             .exec()
         } catch (error) {
             console.log(error);

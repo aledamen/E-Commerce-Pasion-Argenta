@@ -16,7 +16,7 @@ export const ProductsCards = ({ props }) => {
   const [openAddCart, setOpenAddCart] = useState(false);
   const [openAddFavorites, setOpenAddFavorites] = useState(false);
   const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const navigate = useNavigate
 
   const handleAddCart = () => {
     setOpenAddCart(true)
