@@ -37,7 +37,8 @@ export default function ReviewRating() {
     axios
       .put("/api/products/review", { id: id , review: { review: comment,userId:userId,rating:rating }})
       .then((res) => console.log(res))
-      setOpen(false)  
+      setOpen(false)
+
   };
 
   
