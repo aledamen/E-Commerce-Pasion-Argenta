@@ -35,9 +35,9 @@ export default function ReviewRating() {
 
   const handleSend = () => {
     axios
-      .put("/api/products/review", { id: { id }, review: { review: {comment},userId:{userId},rating:{rating}} })
+      .put("/api/products/review", { id: id , review: { review: comment,userId:userId,rating:rating }})
       .then((res) => console.log(res))
-      
+      setOpen(false)
   };
 
   
