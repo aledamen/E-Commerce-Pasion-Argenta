@@ -20,7 +20,6 @@ const ButtonCheckOut = styled(Button)(({ theme }) => ({
     width: '100%',
     padding: '10px',
     backgroundColor: theme.palette.primary.main,
-    border: '1px solid black',
     color: 'white',
     fontWeight: '600',
 }))
