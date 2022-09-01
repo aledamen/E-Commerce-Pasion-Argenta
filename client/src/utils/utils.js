@@ -33,40 +33,22 @@ export const userOptions = [
 
 export const adminOptions = [
     {
-      title: "Agregar Productos",
-      description: "Aqui puede agregar productos a su tienda",
-      buttom: "Agregar",
-      // name : "Nombre del Producto",
-      // description: "Descripcion del producto",
-      // img: "Imagen URL",
-      // price: "Precio del Producto",
-      // stock: "Stock agregado",
-      // category: "Categoria"
+      title: "Crear Productos",
     },
     {
-      title: "Editar Productos",
-      description: "Aqui puede agregar productos a su tienda",
-      buttom: "Editar",
+      title: "Editar Productos"
     },
     {
-      title: "Eliminar Productos",
-      description: "Aqui puede agregar productos a su tienda",
-      buttom: "Eliminar",
+      title: "Eliminar Productos"
     },
     {
-      title: "Usuario a Admin",
-      description: "Aqui puede agregar productos a su tienda",
-      buttom: "Promover",
+      title: "Usuario a Admin"
     },
     {
-      title: "Usuario a Admin",
-      description: "Aqui puede agregar productos a su tienda",
-      buttom: "Promover",
+      title: "Usuario a Admin"
     },
     {
-      title: "Eliminar Usuario",
-      description: "Aqui puede agregar productos a su tienda",
-      buttom: "Eliminar",
+      title: "Eliminar Usuario"
     },
   ];
 
