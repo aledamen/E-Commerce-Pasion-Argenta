@@ -3,13 +3,14 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router";
 import Card from "react-bootstrap/Card";
-import { Col, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import IconButton from "@mui/material/IconButton";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Alert, Snackbar } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { addToCart, sendMe } from "../store/user";
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import Reviews from "../components/Reviews";
 
 export const ProductDetails = () => {
   const { id } = useParams();
@@ -94,7 +95,9 @@ export const ProductDetails = () => {
               </Col>
             </Row>
           </div>
+          
         </div>
+
       ) : (
         <></>
       )}
@@ -112,7 +115,11 @@ export const ProductDetails = () => {
       >
         <Alert severity="success">Product added to Favorites</Alert>
         </Snackbar>
-
+        {product[0] ? (
+        <Container>
+        <p><Reviews product={product[0].review} /></p>
+        </Container>
+        ):(<div></div>)}
     </>
   );
 };
