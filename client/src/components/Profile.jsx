@@ -13,8 +13,8 @@ const Profile = () => {
         <h4>{`Bienvenido ${user.username} `}</h4>
         <br />
         <Grid container>
-          {adminOptions.map((option) => {
-            return <ProfileCard props={option}/>;
+          {adminOptions.map((option,i) => {
+            return <ProfileCard key ={i} props={option}/>;
           })}
         </Grid>
       </div>
@@ -25,8 +25,8 @@ const Profile = () => {
         <h4>{`Bienvenido ${user.username} `}</h4>
         <br />
         <Grid container spacing={1} >
-          {userOptions.map((option) => {
-            return <ProfileCard props={option} spacing={1}/>;
+          {userOptions.map((option,i) => {
+            return <ProfileCard key ={i} props={option} spacing={1}/>;
           })}
         </Grid>
       </div>
