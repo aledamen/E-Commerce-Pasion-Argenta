@@ -45,7 +45,6 @@ const CheckOutMessagge = () => {
     setValue(newValue);
   };
 
-  console.log(dataCheckOut)
   return (
     <Box>
       <TitleOrder >YOUR ORDER</TitleOrder>
