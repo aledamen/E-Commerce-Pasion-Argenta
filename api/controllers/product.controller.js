@@ -86,6 +86,7 @@ class ProductController {
     static async deleteProduct (req,res) {
         try {
             const product = await ProductService.deleteProduct(req.params.id)
+            console.log("asssssssssss",product);
             return res.status(204).send(product);
         } catch (error){
             console.log(error);
