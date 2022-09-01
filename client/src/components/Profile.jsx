@@ -1,23 +1,24 @@
-import { Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import ProfileCard from "../commons/ProfileCard";
 import { adminOptions,userOptions } from "../utils/utils";
+
+
 
 const Profile = () => {
   const { user } = useSelector((state) => state);
 
   if (user.isAdmin) {
     return (
-      <div>
-        <h4>{`Bienvenido ${user.username} `}</h4>
-        <br />
-        <Grid container>
+      <Box style={{display:"flex", flexDirection:"column", textAlign:"center"}}>
+        <Typography sx={{margin:"20px", fontSize:"25px"}}>{`Bienvenido ${user.username} ! `}</Typography>
+        <Grid sx={{display:"flex", justifyContent:"center"}}>
           {adminOptions.map((option) => {
             return <ProfileCard props={option}/>;
           })}
         </Grid>
-      </div>
+      </Box>
     );
   } else {
     return (
