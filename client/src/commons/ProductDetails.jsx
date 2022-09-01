@@ -40,7 +40,6 @@ export const ProductDetails = () => {
   };
   const handleAddFavorites = () => {
     setOpenFavorites(true);
-    );
   };
 
 
