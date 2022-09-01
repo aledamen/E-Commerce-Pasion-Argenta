@@ -8,11 +8,12 @@ import { fontSize } from '@mui/system';
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
-import { sendMe } from '../store/user';
+import { addToCart, removeFromCart, sendMe } from '../store/user';
 import { Alert, Snackbar } from '@mui/material';
 import { useState } from 'react';
-import { subtotal } from '../utils/utils';
+import { saveToLocalStorage, subtotal } from '../utils/utils';
 import CheckOut from './CheckOut';
+import { useEffect } from 'react';
 
 const Top = styled(Box)(({ theme }) => ({
     fontWeight: "300",
@@ -100,19 +101,37 @@ const Cart = () => {
   const cartNoLogued = JSON.parse(localStorage.getItem('cart'))
   const cartToMap = user.cart || cartNoLogued
   
-  const handleAddProductCart = (id, amount) => {
-    axios.put(`api/users/addtocart/${user._id}`, {pid:id, amount:1}).then(()=>dispatch(sendMe()))
+  const handleAddProductCart = (id, amount, product) => {
+    if (cart) {
+      dispatch(addToCart({pid: id, amount:1}))
+    } else {
+      saveToLocalStorage(product, "add") 
+      window.location.reload()
+    }
   }
   
-  const handleReduceProductCart = (id, amount) => {
-    if (amount === 1) {
+  const handleReduceProductCart = (id, amount, product) => {
+    if (cart) {
+      if (amount === 1) {
      return setOpen(true)
     } 
-    axios.put(`api/users/addtocart/${user._id}`, {pid:id, amount:-1}).then(()=>dispatch(sendMe()))
+    dispatch(addToCart({pid: id, amount:-1})) 
+    } else {
+      if (amount === 1) {
+        return setOpen(true)
+       } 
+      saveToLocalStorage(product, "reduce")
+      window.location.reload()
+    } 
   }
 
-  const handleRemoveProductCart = (id) => {
-    axios.put(`api/users/removefromcart/${user._id}`, {pid:id}).then(()=>dispatch(sendMe()))
+  const handleRemoveProductCart = (id, product) => {
+    if (cart) {
+      dispatch(removeFromCart({pid: id}))
+    } else {
+      saveToLocalStorage(product, "remove")
+      window.location.reload()
+    } 
   }
 
   const handleClose = () => {
@@ -143,14 +162,14 @@ const Cart = () => {
                   <Box sx={{fontSize:'15px'}}>
                     <b>Product:</b> {product.name}
                       </Box>
-                      <Box><Button variant="contained" sx={{margin: '5px'}} onClick={()=>handleRemoveProductCart(product._id)}>Remove</Button></Box>
+                      <Box><Button variant="contained" sx={{margin: '5px'}} onClick={()=>handleRemoveProductCart(product._id, product)}>Remove</Button></Box>
                 </Details>
               </Box>
               <PriceDetail>
                 <ProductAmountContainer>
-                <RemoveIcon onClick={()=>handleReduceProductCart(product._id, product.amount)} sx={{cursor:"pointer"} }/>
+                <RemoveIcon onClick={()=>handleReduceProductCart(product._id, product.amount, product)} sx={{cursor:"pointer"} }/>
                       <Box sx={{fontSize:'24px', margin:'5px'}}>{product.amount}</Box>
-                      <AddIcon onClick={()=>handleAddProductCart(product._id, product.amount)} sx={{ cursor: "pointer" }} />
+                      <AddIcon onClick={()=>handleAddProductCart(product._id, product.amount, product)} sx={{ cursor: "pointer" }} />
                 </ProductAmountContainer>
                     <Box sx={{ fontSize: '20px' }}>$ {product.price}</Box>
               </PriceDetail>

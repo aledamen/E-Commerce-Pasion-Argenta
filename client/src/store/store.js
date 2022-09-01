@@ -1,5 +1,6 @@
 import {configureStore, } from '@reduxjs/toolkit'
 import logger from 'redux-logger'
+import checkOutReducer from './checkout'
 import productReducer from './product'
 import userReducer from './user'
 
@@ -9,7 +10,7 @@ const store = configureStore({
     reducer: {
         user: userReducer, // un estado usuario
         product: productReducer,
-            
+        dataCheckOut: checkOutReducer,
     }
 })
 

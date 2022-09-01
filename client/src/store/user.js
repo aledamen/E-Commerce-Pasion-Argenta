@@ -33,8 +33,21 @@ export const LogOutRequest = createAsyncThunk('LOGOUT', async () => {
 export const addToCart = createAsyncThunk('ADD_CART', async (data, thunkAPI) => {
     const { user } = thunkAPI.getState()
     const res = await axios.put(`/api/users/addtocart/${user._id}`, data)
-    return res.data // res entero
+    return res.data 
 })
+
+export const removeFromCart = createAsyncThunk('REMOVE_FROM_CART', async (data, thunkAPI) => {
+    const { user } = thunkAPI.getState()
+    const res = await axios.put(`/api/users/removefromcart/${user._id}`, data)
+    return res.data 
+})
+
+export const checkOut = createAsyncThunk('CHECKOUT', async (data, thunkAPI) => {
+    const { user } = thunkAPI.getState()
+    const res = await axios.put(`/api/users/checkoutok/${user._id}`, data)
+    return res.data 
+})
+
 
 const userReducer = createReducer([], {
     // [setUser]: (state, action) => action.payload,
@@ -42,6 +55,9 @@ const userReducer = createReducer([], {
     [signUpRequest.fulfilled]: (state, action) => action.payload,
     [LogInRequest.fulfilled]: (state, action) => action.payload,
     [LogOutRequest.fulfilled]: (state, action) => action.payload,
+    [addToCart.fulfilled]: (state, action) => action.payload,
+    [removeFromCart.fulfilled]: (state, action) => action.payload,
+    [checkOut.fulfilled]: (state, action) => action.payload,
 
 })
 

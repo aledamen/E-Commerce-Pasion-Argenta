@@ -17,6 +17,20 @@ function Carousels() {
           alt="Second slide"
         />
       </Carousel.Item>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          src="https://www.afashop.com.ar/file/v1621169637035489188/general/3337367_2554140%20-%20CAM_WHS_AR_AFA_AWAY_R1_FW22_Home%20Banner%20Desktop_1899x488px_02.jpg"
+          alt="Second slide"
+        />
+      </Carousel.Item>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          src="https://www.afashop.com.ar/file/v8640034206014132755/general/3337255_2554140%20-%20CAM_WHS_AR_AFA_AWAY_R1_FW22_Home%20Banner%20Desktop_1899x488px_01.jpg"
+          alt="Second slide"
+        />
+      </Carousel.Item>
     </Carousel>
   );
 }

@@ -109,7 +109,7 @@ class UserService {
 
   static async removeFromCart(id, pid) {
     try {
-      return await Users.updateOne(
+      return await Users.findOneAndUpdate(
         { _id: ObjectId(id) },
         { $pull: { cart: { _id: ObjectId(pid) } } },
         { new: true }

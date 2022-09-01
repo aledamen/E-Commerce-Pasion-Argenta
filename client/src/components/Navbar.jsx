@@ -13,6 +13,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
 import { signUpRequest, LogOutRequest, sendMe } from '../store/user'
+import { useEffect } from 'react'
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -46,14 +47,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function Navbar() {
     //traigo estado del usuario
-    const user = useSelector((state) => state.user)
-
+    const user = useSelector((state) => state.user) 
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [search, setSearch] = useState('')
     const [anchorEl, setAnchorEl] = React.useState(null)
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
-
+    const cartNoLogued = JSON.parse(localStorage.getItem('cart'))
+    const lengthCartIcon = user.cart ? user.cart.length : cartNoLogued ? cartNoLogued.length : 0
     const isMenuOpen = Boolean(anchorEl)
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
@@ -73,7 +74,6 @@ export default function Navbar() {
     const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget)
     }
-
     const handleSearch = (e) => {
         setSearch(e.target.value)
     }
@@ -82,13 +82,13 @@ export default function Navbar() {
         navigate(`/search/${search}`)
     }
     const handleCart = (e) => {
-        dispatch(sendMe()).then(() => navigate('/cart'))
+        navigate('/cart')
     }
     const handleLogOut = (e) => {
         dispatch(LogOutRequest()).then(() => navigate('/'))
     }
     const handleFavorites = (e) => {
-        dispatch(sendMe()).then(() => navigate('/favorites'))
+        navigate('/favorites')
     }
 
     const menuId = 'primary-search-account-menu'
@@ -155,7 +155,7 @@ export default function Navbar() {
         >
             <MenuItem>
                 <IconButton onClick={handleCart} size="large" aria-label="show 0 new mails" color="inherit">
-                    <Badge badgeContent={user.cart?.length} color="error">
+                    <Badge badgeContent={lengthCartIcon} color="error">
                         <ShoppingCartIcon/>
                     </Badge>
                 </IconButton>
@@ -253,7 +253,7 @@ export default function Navbar() {
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={user.cart?.length} color="error">
+                            <Badge badgeContent={lengthCartIcon} color="error">
                                 <ShoppingCartIcon onClick={handleCart} />
                             </Badge>
                         </IconButton>
