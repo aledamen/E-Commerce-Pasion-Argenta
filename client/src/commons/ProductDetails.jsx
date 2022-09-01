@@ -6,11 +6,14 @@ import Card from "react-bootstrap/Card";
 import { Col, Row } from "react-bootstrap";
 import IconButton from "@mui/material/IconButton";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, Rating, Snackbar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, sendMe } from "../store/user";
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { Container } from "@mui/system";
 import { saveToLocalStorage } from "../utils/utils";
+import ReviewRating from "../components/ReviewRating";
+
 
 export const ProductDetails = () => {
   const { id } = useParams();
@@ -19,6 +22,7 @@ export const ProductDetails = () => {
   const [openFavorites, setOpenFavorites] = useState(false);
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user)
+
 
 
   useEffect(() => {
@@ -32,17 +36,18 @@ export const ProductDetails = () => {
     setOpenCart(true)
     if (user.username) dispatch(addToCart({ pid: product[0]._id, amount: 1 }))
     else saveToLocalStorage(product[0])
-  }
-
+  };
   const handleAddFavorites = () => {
-    setOpenFavorites(true)
-  }
+    setOpenFavorites(true);
+    );
+  };
+
 
   const handleClose = () => {
     setOpenCart(false);
-    setOpenFavorites(false)
+    setOpenFavorites(false);
   };
-
+  
   return (
     <>
       {product[0] ? (
@@ -66,10 +71,10 @@ export const ProductDetails = () => {
                   <br></br>
                   <h3>descripción:</h3>
                   <p>{product[0].description}</p>
-                  <div class="d-flex justify-content-around">
+                  <div className="d-flex justify-content-around">
                     <h4>Stock:{product[0].stock}</h4>
                   </div>
-                  <div class="d-flex flex-row-reverse">
+                  <div className="d-flex flex-row-reverse">
                     <h4>
                       Precio : ${product[0].price}{" "}
                       <span>
@@ -79,33 +84,27 @@ export const ProductDetails = () => {
                           aria-label="add to shopping cart"
                         >
                           <AddShoppingCartIcon fontSize="large" />
-
-                        </IconButton >
-                        <IconButton onClick={handleAddFavorites}
+                        </IconButton>
+                        <IconButton
+                          onClick={handleAddFavorites}
                           color="primary"
                           aria-label="add to shopping cart"
                         >
                           <FavoriteIcon fontSize="large" />
-                        </IconButton >
-
-                
+                        </IconButton>
                       </span>
                     </h4>
                   </div>
                 </div>
-                <div></div>
               </Col>
             </Row>
           </div>
+          
         </div>
       ) : (
         <></>
       )}
-      <Snackbar
-        open={openCart}
-        autoHideDuration={3000}
-        onClose={handleClose}
-      >
+      <Snackbar open={openCart} autoHideDuration={3000} onClose={handleClose}>
         <Alert severity="success">Product added to Cart</Alert>
       </Snackbar>
       <Snackbar
@@ -114,8 +113,14 @@ export const ProductDetails = () => {
         onClose={handleClose}
       >
         <Alert severity="success">Product added to Favorites</Alert>
-        </Snackbar>
-
+      </Snackbar>
+      <Container>
+     <ReviewRating/>
+  
+      </Container>
+       
+     
+      
     </>
   );
 };
