@@ -6,7 +6,7 @@ import { adminOptions,userOptions } from "../utils/utils";
 
 const Profile = () => {
   const { user } = useSelector((state) => state);
-  
+
   if (user.isAdmin) {
     return (
       <div>

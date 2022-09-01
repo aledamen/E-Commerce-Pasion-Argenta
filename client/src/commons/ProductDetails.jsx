@@ -7,18 +7,23 @@ import { Col, Row } from "react-bootstrap";
 import IconButton from "@mui/material/IconButton";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import { Alert, Rating, Snackbar } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart, sendMe } from "../store/user";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Container } from "@mui/system";
+import { saveToLocalStorage } from "../utils/utils";
 import ReviewRating from "../components/ReviewRating";
+
 
 export const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState({});
   const [openCart, setOpenCart] = useState(false);
   const [openFavorites, setOpenFavorites] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
+  const user = useSelector((state) => state.user)
+
+
 
   useEffect(() => {
     axios
@@ -28,17 +33,15 @@ export const ProductDetails = () => {
   }, []);
 
   const handleAddCart = () => {
-    setOpenCart(true);
-    dispatch(addToCart({ pid: product[0]._id, amount: 1 })).then(() =>
-      dispatch(sendMe())
-    );
+    setOpenCart(true)
+    if (user.username) dispatch(addToCart({ pid: product[0]._id, amount: 1 }))
+    else saveToLocalStorage(product[0])
   };
   const handleAddFavorites = () => {
     setOpenFavorites(true);
-    dispatch(addToCart({ pid: product[0]._id, amount: 1 })).then(() =>
-      dispatch(sendMe())
     );
   };
+
 
   const handleClose = () => {
     setOpenCart(false);

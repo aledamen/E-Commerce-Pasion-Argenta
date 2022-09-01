@@ -31,6 +31,8 @@ router.put("/modify/", UserController.userModify)
 //ruta para promover a admin
 router.put("/toadmin/", UserController.putToAdmin)
 
+router.put('/checkoutok/:id', UserController.checkoutOk)
+
 
 //Add to the Cart
 //Recibe User Id por params, product ID por body.pid, cantidad agregada por body.amount, si ya existe el producto en la cart, suma el amount a la linea existente(o resta si está en negativo)
