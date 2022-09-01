@@ -47,7 +47,16 @@ export const checkOut = createAsyncThunk('CHECKOUT', async (data, thunkAPI) => {
     const res = await axios.put(`/api/users/checkoutok/${user._id}`, data)
     return res.data 
 })
-
+export const addToFavorites = createAsyncThunk('ADD_FAVORITE', async (data, thunkAPI) => {
+    const { user } = thunkAPI.getState()
+    const res = await axios.put(`/api/users/addfavorite/${user._id}`, data)
+    return res.data 
+})
+export const removeFromFavorites = createAsyncThunk('REMOVE_FAVORITE', async (data, thunkAPI) => {
+    const { user } = thunkAPI.getState()
+    const res = await axios.put(`/api/users/removefavorite/${user._id}`, data)
+    return res.data 
+})
 
 const userReducer = createReducer([], {
     // [setUser]: (state, action) => action.payload,
@@ -58,7 +67,8 @@ const userReducer = createReducer([], {
     [addToCart.fulfilled]: (state, action) => action.payload,
     [removeFromCart.fulfilled]: (state, action) => action.payload,
     [checkOut.fulfilled]: (state, action) => action.payload,
-
+    [addToFavorites.fulfilled]: (state, action) => action.payload,
+    [removeFromFavorites.fulfilled]: (state, action) => action.payload,
 })
 
 export default userReducer
