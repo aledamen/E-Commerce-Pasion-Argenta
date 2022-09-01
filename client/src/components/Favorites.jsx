@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
@@ -8,11 +9,11 @@ const Favorites = () => {
     const user = useSelector((state) => state.user);
   return (
     <div >
-        <h1>FAVORITOS</h1>
+        <Typography sx={{ padding:"20px", fontWeight: '300', textAlign: 'center', fontSize: '30px' }}>Favoritos</Typography>
     <Container>
-      <Row>
+      <Row >
         {user.favorites?.map((product, index) => (
-          <Col style={{marginBottom:"20px"}} key={`product-${index}`}>
+          <Col style={{marginBottom:"20px", display:"flex", justifyContent:"center"}} key={`product-${index}`}>
             <ProductsCards key={index} props={product} />
           </Col>
         ))}
