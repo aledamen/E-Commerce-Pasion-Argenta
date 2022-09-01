@@ -50,7 +50,7 @@ if(user.isAdmin) {return (
     </Typography>
   </CardContent>
   <CardActions>
-  <Link to={props.buttom==="cart"?"/cart":"/favorites"}>
+  <Link to={props.buttom=="orders"?"/orders":props.buttom==="cart"?"/cart":"/favorites"}>
     <Button size="small">{props.buttom}</Button>
     </Link>
   </CardActions>
