@@ -9,16 +9,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useState } from "react";
 
 function Reviews({ product }) {
-  const [promedio, setPromedio] = useState(0);
-  let average = 0;
-  const findAverage = (product) => {
-    const { length } = product;
-    return product.reduce((acc, val) => {
-      return acc + val.rating / length;
-    }, 0);
-  };
-  Array.isArray(product) ? (average = findAverage(product)) : (average = 0);
-  console.log("promedio: ", product, average);
   return (
     <div>
       <br />
