@@ -1,4 +1,4 @@
-export const subtotal = (cart) => {
+ export const subtotal = (cart) => {
     let total = cart?.reduce((acc,product) => {
      return acc+=product.price*product.amount
     },0)
@@ -51,7 +51,8 @@ export const userOptions = [
     title: "Mis ordenes",
     description: "Tenga acceso a sus ordenes creadas",
     buttom: "orders",
-  }
+  },
+  
 ];
 
 
@@ -66,13 +67,10 @@ export const adminOptions = [
       title: "Eliminar Productos"
     },
     {
-      title: "Usuario a Admin"
-    },
-    {
-      title: "Usuario a Admin"
+      title: "Opciones de Usuarios"
     },
     {
       title: "Eliminar Usuario"
     },
   ];
-
+ 

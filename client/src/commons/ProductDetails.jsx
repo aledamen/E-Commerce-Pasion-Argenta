@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router";
 import Card from "react-bootstrap/Card";
-import { Col, Row } from "react-bootstrap";
+import { Col, Container, Row } from "react-bootstrap";
 import IconButton from "@mui/material/IconButton";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -14,7 +14,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import { Container } from "@mui/system";
 import { saveToLocalStorage } from "../utils/utils";
 import Reviews from "../components/Reviews";
-
+import ReviewRating from "../components/ReviewRating";
 
 export const ProductDetails = () => {
   const { id } = useParams();
@@ -23,8 +23,6 @@ export const ProductDetails = () => {
   const [openFavorites, setOpenFavorites] = useState(false);
   const [openRemoveFavorites, setOpenRemoveFavorites] = useState(false);
   const dispatch = useDispatch()
-  const user = useSelector((state) => state.user)
-
 
 
   useEffect(() => {
@@ -36,9 +34,9 @@ export const ProductDetails = () => {
 
   const handleAddCart = () => {
     setOpenCart(true)
-    if (user.username) dispatch(addToCart({ pid: product[0]._id, amount: 1 }))
+    dispatch(addToCart({ pid: product[0]._id, amount: 1 }))
     else saveToLocalStorage(product[0])
-  };
+  }
   const handleAddFavorites = () => {
     setOpenFavorites(true);
     user.username && dispatch(addToFavorites(product[0]))
@@ -50,9 +48,9 @@ export const ProductDetails = () => {
 
   const handleClose = () => {
     setOpenCart(false);
-    setOpenFavorites(false);
+    setOpenFavorites(false)
   };
-  
+
   return (
     <>
       {product[0] ? (
@@ -76,10 +74,10 @@ export const ProductDetails = () => {
                   <br></br>
                   <h3>descripción:</h3>
                   <p>{product[0].description}</p>
-                  <div className="d-flex justify-content-around">
+                  <div class="d-flex justify-content-around">
                     <h4>Stock:{product[0].stock}</h4>
                   </div>
-                  <div className="d-flex flex-row-reverse">
+                  <div class="d-flex flex-row-reverse">
                     <h4>
                       Precio : ${product[0].price}{" "}
                       <span>
@@ -89,13 +87,14 @@ export const ProductDetails = () => {
                           aria-label="add to shopping cart"
                         >
                           <AddShoppingCartIcon fontSize="large" />
-                        </IconButton>
-                        <IconButton
-                          onClick={handleAddFavorites}
+
+                        </IconButton >
+                        <IconButton onClick={handleAddFavorites}
                           color="primary"
                           aria-label="add to shopping cart"
                         >
                           <FavoriteIcon fontSize="large" />
+
                         </IconButton>
                         <IconButton
                           onClick={handleRemoveFavorites}
@@ -108,6 +107,7 @@ export const ProductDetails = () => {
                     </h4>
                   </div>
                 </div>
+                <div></div>
               </Col>
             </Row>
           </div>
@@ -117,7 +117,11 @@ export const ProductDetails = () => {
       ) : (
         <></>
       )}
-      <Snackbar open={openCart} autoHideDuration={3000} onClose={handleClose}>
+      <Snackbar
+        open={openCart}
+        autoHideDuration={3000}
+        onClose={handleClose}
+      >
         <Alert severity="success">Product added to Cart</Alert>
       </Snackbar>
       <Snackbar
@@ -135,7 +139,8 @@ export const ProductDetails = () => {
         <Alert severity="success">Product removed from Favorites</Alert>
 
         </Snackbar>
-      {product[0] ? (
+        {product[0] ? (
+
         <Container>
         <p><Reviews product={product[0].review} /></p>
         </Container>

@@ -104,7 +104,7 @@ static async modifyCart (req, res) {
     
 static async putToAdmin (req,res) {
     try{
-        const user = await UserService.putToAdmin(req.body)
+        const user = await UserService.putToAdmin(req.params.id)
         return res.status(204).send(user)
 
     } catch (error) {

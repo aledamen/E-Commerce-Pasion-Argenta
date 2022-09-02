@@ -5,8 +5,8 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useDispatch, useSelector } from "react-redux";
-import { sendCreateProduct, sendEditProduct } from "../store/product";
+import { useDispatch} from "react-redux";
+import { sendCreateProduct} from "../store/product";
 import TableProduct from "../components/TableProduct";
 import { Alert, alertClasses, Box, Grid, Slide } from "@mui/material";
 import AppBar from '@mui/material/AppBar';
@@ -15,7 +15,6 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from "axios";
-
 
 export default function FormCreateProduct({ props }) {
   const [open, setOpen] = React.useState(false)
@@ -41,8 +40,8 @@ export default function FormCreateProduct({ props }) {
   const handleCreate = (e) => {
     e.preventDefault();
     dispatch(sendCreateProduct({...product}))
-      .then(() => alert("producto creado"))
-      .catch((err) => alert("no se pudo crear el producto",err));
+      .then(() => handleClose())
+      .catch((err) => err);
   };
   return (
     <Grid style={{ display: "flex"}} container justifyContent="center">
@@ -76,7 +75,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export function EditProduct (){
-const {user,product} = useSelector(state=>state)
 const [open, setOpen] = React.useState(false)
 const handleClickOpen = ()=>setOpen(true)
 const handleClose = ()=>setOpen(false)
@@ -112,7 +110,6 @@ const handleClose = ()=>setOpen(false)
         </AppBar>
      <DialogContent>
      <TableProduct />
-
       </DialogContent>
       </Dialog>
     </Grid>
@@ -120,16 +117,21 @@ const handleClose = ()=>setOpen(false)
 }
 
 export function DeleteProduct(){
-  const dispatch = useDispatch()
-  const {user,product} = useSelector(state=>state)
+
+const [product,setProduct]=React.useState([])
   const [open, setOpen] = React.useState(false)
   const handleClickOpen = ()=>setOpen(true)
   const handleClose = ()=>setOpen(false)
 
+  React.useEffect(() => {
+    axios.get("/api/products/all")
+      .then(({data}) =>setProduct(data) )
+  }, []);
+
   const handleDelete = (e)=>{
     const id =e.target.id;
-    axios.delete(`/products/delete/${id}`)
-    .then(()=>alert(`Producto ELiminado : ${e.target.name.slice(0,8)}`))
+    axios.delete(`/api/products/delete/${id}`)
+    .then(()=>window.location.reload())
     .catch(err=>console.log(err))
   }
 
@@ -153,9 +155,9 @@ export function DeleteProduct(){
                 onClick={handleDelete}
                 >Eliminar</Button>
                   </div>
-                })) : (
+                }) : 
                   <div>no hay productos</div>
-                )}
+                }
               </DialogContent>
               <DialogActions>
                 <Button variant="contained" onClick={handleClose}>Cancel</Button>
@@ -164,4 +166,64 @@ export function DeleteProduct(){
       
     </Grid>
   )
+}
+
+export function UsersOptions(){
+  const [open, setOpen] = React.useState(false)
+  const handleClickOpen = ()=>setOpen(true)
+  const handleClose = ()=>setOpen(false)
+  const [users,setUsers] = React.useState([])
+
+  React.useEffect(() => {
+    axios
+      .get("/api/users/all")
+      .then(({data}) =>setUsers(data))
+  }, []);
+
+  const handlePromove = (e)=>{
+    axios.put(`/api/users/toadmin/${e}`)
+    .then(()=>window.location.reload()) 
+    .catch(err=>err)
+  }
+
+  const handleDelete= (e)=>{
+    axios.delete(`/api/users/delete/${e}`)
+    .then(()=>window.location.reload()) 
+    .catch(err=>err)
+  }
+
+  return (
+  <div>
+<Button variant="outlined" onClick={handleClickOpen}>
+        Usuarios 
+      </Button> 
+              <Dialog open={open} onClose={handleClose}>
+              <DialogTitle>Usuarios : {users.length}</DialogTitle>
+              <DialogContent>
+                {users.map((user,i)=>{
+                return <div>
+                  <p>Nombre de usuario : {user.username}</p> 
+                  {user.isAdmin?<p>Este usuario es Admin</p>:<p>Este usuario es Cliente</p>}
+                  <Button 
+                  key={i}
+                autoFocus 
+                name={user.name}
+                id={user._id} 
+                onClick={()=>handlePromove(user._id)}
+                >{user.isAdmin? <>Cambiar a cliente</>:<>Hacerlo Admin</>}</Button>
+                  <Button 
+                autoFocus 
+                name={user.name}
+                id={user._id} 
+                onClick={()=>handleDelete(user._id)}
+                >Eliminar</Button>
+                 </div>
+                })}
+               
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleClose}>Cancel</Button>
+              </DialogActions>
+            </Dialog>
+  </div>)
 }

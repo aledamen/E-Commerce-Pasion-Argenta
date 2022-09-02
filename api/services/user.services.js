@@ -75,12 +75,16 @@ class UserService {
     }
   }
 
-  static async putToAdmin(body) {
+  static async putToAdmin(id) {
     try {
-      return await Users.updateOne(
-        { _id: body.id },
-        { $set: { isAdmin: body.toggle } }
-      );
+     const user=  await Users.findOne({_id:id})
+     console.log("*************",user);
+      if(user.isAdmin) return Users.updateOne({_id:id},{isAdmin: false})
+      if(user.isAdmin===false) return Users.updateOne({_id:id},{isAdmin: true})
+      // return await Users.updateOne(
+      //   { _id: body.id },
+      //   { $set: { isAdmin: body.toggle } }
+      // );
     } catch (error) {
       console.log(error);
     }

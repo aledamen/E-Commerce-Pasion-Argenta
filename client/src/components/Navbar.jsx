@@ -1,49 +1,58 @@
-import * as React from 'react'
-import { styled, alpha } from '@mui/material/styles'
-import {AppBar, Box, Toolbar, IconButton, Typography, InputBase, Badge, Menu, MenuItem, Avatar} from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
-import SearchIcon from '@mui/icons-material/Search'
-import AccountCircle from '@mui/icons-material/AccountCircle'
-import MailIcon from '@mui/icons-material/Mail'
-import NotificationsIcon from '@mui/icons-material/Notifications'
-import MoreIcon from '@mui/icons-material/MoreVert'
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { useState } from 'react'
-import { signUpRequest, LogOutRequest, sendMe } from '../store/user'
-import { useEffect } from 'react'
+import * as React from "react";
+import { styled, alpha } from "@mui/material/styles";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  InputBase,
+  Badge,
+  Menu,
+  MenuItem,
+  Avatar,
+} from "@mui/material";
 
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
-    },
-}))
+import SearchIcon from "@mui/icons-material/Search";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import MoreIcon from "@mui/icons-material/MoreVert";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { LogOutRequest } from "../store/user";
+
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  "&:hover": {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: "100%",
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(3),
+    width: "auto",
+  },
+}));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(2)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '20ch',
-        },
+  color: "inherit",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(2)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
     },
-}))
+  },
+}));
 
 export default function Navbar() {
     //traigo estado del usuario
@@ -59,46 +68,72 @@ export default function Navbar() {
     const isMenuOpen = Boolean(anchorEl)
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
-    const handleProfileMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget)
-    }
 
-    const handleMobileMenuClose = () => {
-        setMobileMoreAnchorEl(null)
-    }
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    const handleMenuClose = () => {
-        setAnchorEl(null)
-        handleMobileMenuClose()
-    }
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
 
-    const handleMobileMenuOpen = (event) => {
-        setMobileMoreAnchorEl(event.currentTarget)
-    }
-    const handleSearch = (e) => {
-        setSearch(e.target.value)
-    }
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        navigate(`/search/${search}`)
-    }
-    const handleCart = (e) => {
-        navigate('/cart')
-    }
-    const handleLogOut = (e) => {
-        dispatch(LogOutRequest()).then(() => navigate('/'))
-    }
-    const handleFavorites = (e) => {
-        navigate('/favorites')
-    }
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
 
-    const menuId = 'primary-search-account-menu'
-    const renderMenu = (
-        <Menu
-            anchorEl={anchorEl}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+  const handleMobileMenuOpen = (event) => {
+    setMobileMoreAnchorEl(event.currentTarget);
+  };
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/search/${search}`);
+  };
+  const handleCart = (e) => {
+    navigate("/cart");
+  };
+  const handleLogOut = (e) => {
+    dispatch(LogOutRequest()).then(() => navigate("/"));
+  };
+  const handleFavorites = (e) => {
+    navigate("/favorites");
+  };
+
+  const menuId = "primary-search-account-menu";
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      {user.username ? (
+        <div>
+          <Link to="/profile" style={{ textDecoration: "none" }}>
+            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+          </Link>
+          <Link to="/profile" style={{ textDecoration: "none" }}>
+            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+          </Link>
+          <div
+            onClick={handleLogOut}
+            style={{
+              textDecoration: "none",
+              color: "red",
+              border: "none",
+              backgroundColor: "none",
             }}
             id={menuId}
             keepMounted
@@ -110,7 +145,7 @@ export default function Navbar() {
             onClose={handleMenuClose}
         >
             {user.username ? (
-                <div>
+                              <div>
                     <Link to="/profile" style={{ textDecoration: 'none' }}>
                         <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
                     </Link>
@@ -132,24 +167,71 @@ export default function Navbar() {
                 </div>
             )}
         </Menu>
-    )
+  );
 
-    const mobileMenuId = 'primary-search-account-menu-mobile'
-    const renderMobileMenu = (
-        <Menu
-            anchorEl={mobileMoreAnchorEl}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            id={mobileMenuId}
-            keepMounted
-            transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            open={isMobileMenuOpen}
-            onClose={handleMobileMenuClose}
+
+  const mobileMenuId = "primary-search-account-menu-mobile";
+  const renderMobileMenu = (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem>
+        <IconButton
+          onClick={handleCart}
+          size="large"
+          aria-label="show 0 new mails"
+          color="inherit"
+        >
+          <Badge badgeContent={lengthCartIcon} color="error">
+            <ShoppingCartIcon />
+          </Badge>
+        </IconButton>
+        <p>Cart</p>
+      </MenuItem>
+      <MenuItem>
+        <IconButton
+          onClick={handleFavorites}
+          size="large"
+          aria-label="show 0 new mails"
+          color="inherit"
+        >
+          <Badge badgeContent={0} color="error">
+            <FavoriteIcon />
+          </Badge>
+        </IconButton>
+        <p>Favorites</p>
+      </MenuItem>
+      <MenuItem>
+        <IconButton
+          size="large"
+          aria-label="show 0 new notifications"
+          color="inherit"
+        >
+          <Badge badgeContent={0} color="error">
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
+        <p>Notifications</p>
+      </MenuItem>
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
         >
             <MenuItem onClick={handleCart}>
                 <IconButton  size="large" aria-label="show 0 new mails" color="inherit">

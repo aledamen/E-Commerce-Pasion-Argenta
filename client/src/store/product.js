@@ -17,8 +17,9 @@ export const sendEditProduct = createAsyncThunk ("EDIT_PRODUCT",async (product)=
     return await axios.put(`/api/products/modify`,product).then(r=>r.data)
 })
 
-export const deleteProduct = createAsyncThunk ("DELETE_PRODUCT",async ({id})=>{
-    return await axios.put(`/api/products/delete/${id}`).then(r=>r.data)
+export const deleteProduct = createAsyncThunk (`DELETE_PRODUCT`,(id)=>{
+    axios.delete(`/api/products/delete/${id}`)
+    .then(res=>res.data)
 })
 
 export const setProduct = createAction('SET_PRODUCT')

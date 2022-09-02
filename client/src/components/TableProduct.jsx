@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { sendEditProduct, setProduct } from "../store/product";
+import {setProduct } from "../store/product";
 import {
   Box,
   Button,
@@ -22,15 +22,16 @@ import { useNavigate } from "react-router";
 import { useEffect } from "react";
 import { useState } from "react";
 
+
 export default function TableProduct() {
   const { product } = useSelector((state) => state);
   const navigate = useNavigate()
   const dispatch = useDispatch();
   const [edit, setEdit] = useState({});
 
-useEffect(() => {
-    axios
-      .get("/api/products/all")
+
+  React.useEffect(() => {
+    axios.get("/api/products/all")
       .then((res) => res.data)
       .then((data) => dispatch(setProduct(data)));
   }, []);
@@ -53,9 +54,9 @@ useEffect(() => {
 
   const handleEditProduct = (e) => {
     e.preventDefault();
-    dispatch(sendEditProduct({ id: e.target.id, mod: { ...edit } })).then(() =>
-      alert("producto editado")
-    );
+    axios.put(`/api/products/modify`,{ id: e.target.id, mod: { ...edit } })
+    .then(({data})=>data)
+    .catch(err=>err)
   };
   return (
     <TableContainer component={Paper}>
