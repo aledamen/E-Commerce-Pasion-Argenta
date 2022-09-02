@@ -1,5 +1,4 @@
-import { Card, Container, Grid, TextField, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Card, Grid, TextField, Typography } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
 import { EditProfile } from "../components/EditProfile";
@@ -15,7 +14,7 @@ export const UserCard = () => {
         </Typography>
         <TextField
           label="Usuario"
-          defaultValue="german"
+          value={user.username}
           size="small"
           inputProps={{ readOnly: true, style:{textAlign:"center"} }}
         />
@@ -25,10 +24,9 @@ export const UserCard = () => {
         </Typography>
         <TextField
           label="Email"
-          defaultValue="german@gamil.com"
+          value={user.email}
           size="small"
           inputProps={{ readOnly: true,style:{textAlign:"center"}  }}
-      
         />
 
         <EditProfile />

@@ -10,10 +10,9 @@ const ReviewSchema = new mongoose.Schema(
         },
         rating: {
             type: Decimal128,
-        }
+        },
     },
     { timestamps: true }
 )
-
 
 module.exports = mongoose.model('review', ReviewSchema)

@@ -2,8 +2,7 @@ import { Typography } from '@mui/material'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
-import { useLocation, useParams } from 'react-router'
+import { useParams } from 'react-router'
 import { ProductsCards } from '../commons/ProductsCard'
 
 const Search = () => {
@@ -17,15 +16,19 @@ const Search = () => {
             .then((data) => setSearch(data))
     }, [param])
 
-    
     return (
         <div>
-             <Typography sx={{ padding:"20px", fontWeight: '300', textAlign: 'center', fontSize: '30px' }}>Busqueda</Typography>
+            <Typography sx={{ padding: '20px', fontWeight: '300', textAlign: 'center', fontSize: '30px' }}>
+                Busqueda
+            </Typography>
             {param ? (
                 <Container>
                     <Row>
                         {search?.map((product, index) => (
-                            <Col style={{marginBottom:"20px", display:"flex", justifyContent:"center"}} key={`product-${index}`}>
+                            <Col
+                                style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}
+                                key={`product-${index}`}
+                            >
                                 <ProductsCards key={index} props={product} />
                             </Col>
                         ))}
