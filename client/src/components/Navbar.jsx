@@ -1,26 +1,15 @@
 import * as React from 'react'
 import { styled, alpha } from '@mui/material/styles'
-import AppBar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
-import InputBase from '@mui/material/InputBase'
-import Badge from '@mui/material/Badge'
-import MenuItem from '@mui/material/MenuItem'
-import Menu from '@mui/material/Menu'
-import MenuIcon from '@mui/icons-material/Menu'
+import { AppBar, Box, Toolbar, IconButton, Typography, InputBase, Badge, Menu, MenuItem, Avatar } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search'
 import AccountCircle from '@mui/icons-material/AccountCircle'
-import MailIcon from '@mui/icons-material/Mail'
-import NotificationsIcon from '@mui/icons-material/Notifications'
 import MoreIcon from '@mui/icons-material/MoreVert'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
+import FavoriteIcon from '@mui/icons-material/Favorite'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Avatar } from '@mui/material'
 import { useState } from 'react'
-import { signUpRequest, LogOutRequest } from '../store/user'
+import { LogOutRequest } from '../store/user'
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -38,16 +27,6 @@ const Search = styled('div')(({ theme }) => ({
     },
 }))
 
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}))
-
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
@@ -62,15 +41,16 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }))
 
-export default function PrimarySearchAppBar() {
-    //traigo estado del usuario
+export default function Navbar() {
     const user = useSelector((state) => state.user)
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [search, setSearch] = useState('')
     const [anchorEl, setAnchorEl] = React.useState(null)
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null)
-
+    const cartNoLogued = JSON.parse(localStorage.getItem('cart'))
+    const lengthCartIcon = user.cart ? user.cart.length : cartNoLogued ? cartNoLogued.length : 0
+    const lengthFavIcon = user.favorites && user.favorites.length
     const isMenuOpen = Boolean(anchorEl)
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
 
@@ -90,21 +70,23 @@ export default function PrimarySearchAppBar() {
     const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget)
     }
-
     const handleSearch = (e) => {
         setSearch(e.target.value)
     }
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log('esta es search', search)
+        navigate(`/search/${search}`)
     }
     const handleCart = (e) => {
-        navigate("/cart")
+        navigate('/cart')
     }
     const handleLogOut = (e) => {
-        dispatch(LogOutRequest());
+        dispatch(LogOutRequest()).then(() => navigate('/'))
     }
-    console.log("este es el user", user)
+    const handleFavorites = (e) => {
+        navigate('/favorites')
+    }
+
     const menuId = 'primary-search-account-menu'
     const renderMenu = (
         <Menu
@@ -125,23 +107,22 @@ export default function PrimarySearchAppBar() {
             {user.username ? (
                 <div>
                     <Link to="/profile" style={{ textDecoration: 'none' }}>
-                        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+                        <MenuItem onClick={handleMenuClose}>Perfil</MenuItem>
                     </Link>
-                    <Link to="/profile" style={{ textDecoration: 'none' }}>
-                        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-                    </Link>
-                    <div onClick={handleLogOut} style={{ textDecoration: 'none', color: 'inherit', border:'none', backgroundColor:'none' }}>
-                      <MenuItem onClick={handleMenuClose}>Log Out</MenuItem>  
-                      </div>
-                    
+                    <div
+                        onClick={handleLogOut}
+                        style={{ textDecoration: 'none', color: 'red', border: 'none', backgroundColor: 'none' }}
+                    >
+                        <MenuItem onClick={handleMenuClose}>Salir</MenuItem>
+                    </div>
                 </div>
             ) : (
                 <div>
                     <Link to="/signup" style={{ textDecoration: 'none' }}>
-                        <MenuItem onClick={handleMenuClose}>Sign Up</MenuItem>
+                        <MenuItem onClick={handleMenuClose}>Registrarse</MenuItem>
                     </Link>
                     <Link to="/login" style={{ textDecoration: 'none' }}>
-                        <MenuItem onClick={handleMenuClose}>Log In</MenuItem>
+                        <MenuItem onClick={handleMenuClose}>Ingresar</MenuItem>
                     </Link>
                 </div>
             )}
@@ -166,21 +147,22 @@ export default function PrimarySearchAppBar() {
             onClose={handleMobileMenuClose}
         >
             <MenuItem>
-                <IconButton size="large" aria-label="show 0 new mails" color="inherit">
-                    <Badge badgeContent={0} color="error">
-                        <MailIcon />
+                <IconButton onClick={handleCart} size="large" aria-label="show 0 new mails" color="inherit">
+                    <Badge badgeContent={lengthCartIcon} color="error">
+                        <ShoppingCartIcon />
                     </Badge>
                 </IconButton>
-                <p>Messages</p>
+                <p>Cart</p>
             </MenuItem>
             <MenuItem>
-                <IconButton size="large" aria-label="show 0 new notifications" color="inherit">
+                <IconButton onClick={handleFavorites} size="large" aria-label="show 0 new mails" color="inherit">
                     <Badge badgeContent={0} color="error">
-                        <NotificationsIcon />
+                        <FavoriteIcon />
                     </Badge>
                 </IconButton>
-                <p>Notifications</p>
+                <p>Favorites</p>
             </MenuItem>
+
             <MenuItem onClick={handleProfileMenuOpen}>
                 <IconButton
                     size="large"
@@ -207,9 +189,6 @@ export default function PrimarySearchAppBar() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">
                 <Toolbar sx={{ padding: '0' }}>
-                    <IconButton size="large" edge="start" color="inherit" aria-label="open drawer" sx={{ mr: 2 }}>
-                        <MenuIcon />
-                    </IconButton>
                     <Typography variant="h6" noWrap component="div" sx={{ display: { xs: 'none', sm: 'block' } }}>
                         <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
                             Pasion Argenta
@@ -228,11 +207,8 @@ export default function PrimarySearchAppBar() {
                                 backgroundColor: 'none',
                             }}
                         >
-                            {/* <button type='submit'>
-                            
-                        </button> */}
                             <StyledInputBase
-                                placeholder="Search…"
+                                placeholder="Buscar…"
                                 inputProps={{ 'aria-label': 'search' }}
                                 onChange={handleSearch}
                                 sx={{ padding: '2px', color: 'white' }}
@@ -259,19 +235,14 @@ export default function PrimarySearchAppBar() {
                     </Search>
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                    <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={0} color="error">
+                        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+                            <Badge badgeContent={lengthCartIcon} color="error">
                                 <ShoppingCartIcon onClick={handleCart} />
                             </Badge>
                         </IconButton>
                         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={0} color="error">
-                                <MailIcon />
-                            </Badge>
-                        </IconButton>
-                        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-                            <Badge badgeContent={0} color="error">
-                                <NotificationsIcon />
+                            <Badge badgeContent={lengthFavIcon} color="error">
+                                <FavoriteIcon onClick={handleFavorites} />
                             </Badge>
                         </IconButton>
                         <IconButton
@@ -283,7 +254,14 @@ export default function PrimarySearchAppBar() {
                             onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
-                            <AccountCircle />
+                            {user.username ? (
+                                <Avatar
+                                    alt="Remy Sharp"
+                                    src="https://thumbs.dreamstime.com/b/hombre-avatar-del-friki-104871313.jpg"
+                                />
+                            ) : (
+                                <AccountCircle />
+                            )}
                         </IconButton>
                     </Box>
                     <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
