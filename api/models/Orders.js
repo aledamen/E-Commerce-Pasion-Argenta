@@ -4,7 +4,6 @@ const OrdersSchema = new mongoose.Schema(
     {
         userId: {
             type: String,
-
         },
         order: {
             type: Array,
@@ -12,11 +11,9 @@ const OrdersSchema = new mongoose.Schema(
         },
         total: {
             type: Number,
-
         },
     },
     { timestamps: true }
 )
-
 
 module.exports = mongoose.model('orders', OrdersSchema)

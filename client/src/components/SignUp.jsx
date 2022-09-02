@@ -10,12 +10,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { useDispatch } from 'react-redux'
-import {useForm} from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { signUpRequest } from '../store/user'
 import { useNavigate } from 'react-router'
 import { Alert, Snackbar } from '@mui/material'
 import { useState } from 'react'
-
 
 function Copyright(props) {
     return (
@@ -34,20 +33,23 @@ export default function SignUp() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [open, setOpen] = useState(false)
-    const { register, handleSubmit, formState: { errors } } = useForm({
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm({
         defaultValues: {
             username: '',
             email: '',
             password: '',
-        }
+        },
     })
     const onSubmit = (data) => {
-        dispatch(signUpRequest(data))
-            .then((res) => res.payload ? navigate('/') : setOpen(true))
+        dispatch(signUpRequest(data)).then((res) => (res.payload ? navigate('/') : setOpen(true)))
     }
     const handleClose = () => {
-        setOpen(false);
-      };
+        setOpen(false)
+    }
     return (
         <>
             <Container component="main" maxWidth="xs">
@@ -64,69 +66,73 @@ export default function SignUp() {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign up
+                        Registrarse
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
                                 <TextField
                                     autoComplete="given-name"
-                                    {...register("username", {required:'This is required', minLength:{value:4, message:'Min length is 4'}})}
+                                    {...register('username', {
+                                        required: 'Este campo es requerido',
+                                        minLength: { value: 4, message: 'Min length is 4' },
+                                    })}
                                     required
                                     fullWidth
                                     id="userName"
-                                    label="Username"
+                                    label="Nombre de Usuario"
                                     autoFocus
                                 />
-                                {errors.username?.message }
+                                {errors.username?.message}
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
                                     required
                                     fullWidth
                                     id="email"
-                                    label="Email Address"
-                                    {...register("email", {required:'This is required', pattern: {
-                                        value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                                        message: 'Please enter a valid email',
-                                    }})}
+                                    label="Email"
+                                    {...register('email', {
+                                        required: 'Este campo es requerido',
+                                        pattern: {
+                                            value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                            message: 'Por favor ingresá un correo válido',
+                                        },
+                                    })}
                                     autoComplete="email"
                                 />
-                                {errors.email?.message }
+                                {errors.email?.message}
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
                                     required
                                     fullWidth
-                                    {...register("password", {
-                                    required: 'This is required', minLength:{value:4, message:'Min length is 4'}})}
-                                    label="Password"
+                                    {...register('password', {
+                                        required: 'Este campo es requerido',
+                                        minLength: { value: 4, message: 'Min length is 4' },
+                                    })}
+                                    label="Contraseña"
                                     type="password"
                                     id="password"
                                     autoComplete="new-password"
                                 />
-                                {errors.password?.message }
+                                {errors.password?.message}
                             </Grid>
                         </Grid>
                         <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                            Sign Up
+                            Registrarse
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
                                 <Link href="/login" variant="body2">
-                                    Already have an account? Log in
+                                    Ya tenes una cuenta? Inicia sesión
                                 </Link>
                             </Grid>
                         </Grid>
                     </Box>
                 </Box>
                 <Copyright sx={{ mt: 5 }} />
-                <Snackbar
-        open={open}
-        autoHideDuration={3000}
-        onClose={handleClose}
-      >
-        <Alert severity="error">Data has already exist</Alert>
+                <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+                    <Alert severity="error">Los datos ya existen</Alert>
                 </Snackbar>
             </Container>
         </>

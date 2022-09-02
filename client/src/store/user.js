@@ -1,21 +1,21 @@
-import { createAsyncThunk, createReducer } from "@reduxjs/toolkit";
-import axios from "axios"
+import { createAsyncThunk, createReducer } from '@reduxjs/toolkit'
+import axios from 'axios'
 
 export const sendMe = createAsyncThunk('ME', async () => {
     const auth = await axios.get('/api/auth/me')
     const res = await axios.get(`/api/users/${auth.data._id}`)
-    return res.data 
+    return res.data
 })
 
-export const  getAllUsers= createAsyncThunk('ALL_USERS', async () => {
+export const getAllUsers = createAsyncThunk('ALL_USERS', async () => {
     const res = await axios.get('/api/users/all')
-    return res.data 
+    return res.data
 })
 
 export const signUpRequest = createAsyncThunk('SIGNUP', async (data) => {
-        const auth = await axios.post('/api/auth/signup', data)
-        const res = await axios.get(`/api/users/${auth.data._id}`)
-        return res.data 
+    const auth = await axios.post('/api/auth/signup', data)
+    const res = await axios.get(`/api/users/${auth.data._id}`)
+    return res.data
 })
 
 export const LogInRequest = createAsyncThunk('LOGIN', async (data) => {
@@ -29,33 +29,32 @@ export const LogOutRequest = createAsyncThunk('LOGOUT', async () => {
     return res.data
 })
 
-
 export const addToCart = createAsyncThunk('ADD_CART', async (data, thunkAPI) => {
     const { user } = thunkAPI.getState()
     const res = await axios.put(`/api/users/addtocart/${user._id}`, data)
-    return res.data 
+    return res.data
 })
 
 export const removeFromCart = createAsyncThunk('REMOVE_FROM_CART', async (data, thunkAPI) => {
     const { user } = thunkAPI.getState()
     const res = await axios.put(`/api/users/removefromcart/${user._id}`, data)
-    return res.data 
+    return res.data
 })
 
 export const checkOut = createAsyncThunk('CHECKOUT', async (data, thunkAPI) => {
     const { user } = thunkAPI.getState()
     const res = await axios.put(`/api/users/checkoutok/${user._id}`, data)
-    return res.data 
+    return res.data
 })
 export const addToFavorites = createAsyncThunk('ADD_FAVORITE', async (data, thunkAPI) => {
     const { user } = thunkAPI.getState()
     const res = await axios.put(`/api/users/addfavorite/${user._id}`, data)
-    return res.data 
+    return res.data
 })
 export const removeFromFavorites = createAsyncThunk('REMOVE_FAVORITE', async (data, thunkAPI) => {
     const { user } = thunkAPI.getState()
     const res = await axios.put(`/api/users/removefavorite/${user._id}`, data)
-    return res.data 
+    return res.data
 })
 
 const userReducer = createReducer([], {

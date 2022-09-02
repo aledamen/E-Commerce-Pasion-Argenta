@@ -1,19 +1,16 @@
 import AddIcon from '@mui/icons-material/Add'
 import RemoveIcon from '@mui/icons-material/Remove'
-import { styled, alpha } from '@mui/material/styles'
+import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
-import { fontSize } from '@mui/system'
 import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import axios from 'axios'
 import { addToCart, removeFromCart, sendMe } from '../store/user'
 import { Alert, Snackbar } from '@mui/material'
 import { useState } from 'react'
 import { saveToLocalStorage, subtotal } from '../utils/utils'
 import CheckOut from './CheckOut'
-import { useEffect } from 'react'
 
 const Top = styled(Box)(({ theme }) => ({
     fontWeight: '300',
@@ -138,12 +135,16 @@ const Cart = () => {
         <Box sx={{ padding: '20px' }}>
             <Typography sx={{ fontWeight: '300', textAlign: 'center', fontSize: '30px' }}>Carrito</Typography>
             <Top>
-                <TopButton onClick={() => navigate('/')}><ButtonCheckOut variant="contained">Continue Shopping</ButtonCheckOut></TopButton>
+                <TopButton onClick={() => navigate('/')}>
+                    <ButtonCheckOut variant="contained">Continuar con la Compra</ButtonCheckOut>
+                </TopButton>
                 <Box>
-                    <TopText>Shopping Bag({cartToMap?.length})</TopText>
-                    <TopText>Your Favorites({favorites ? favorites.length : 0})</TopText>
+                    <TopText>Carrito de Compras({cartToMap?.length})</TopText>
+                    <TopText>Mis Favoritos({favorites ? favorites.length : 0})</TopText>
                 </Box>
-                <TopButton type="filled"><CheckOut total={subtotal(cartToMap)} /></TopButton>
+                <TopButton type="filled">
+                    <CheckOut total={subtotal(cartToMap)} />
+                </TopButton>
             </Top>
             <Bottom sx={{ flexDirection: { xs: 'column', md: 'row' } }}>
                 <Box sx={{ width: '70%' }}>
@@ -154,7 +155,7 @@ const Cart = () => {
                                     <img src={product.img} style={{ width: '150px' }} />
                                     <Details>
                                         <Box sx={{ fontSize: '15px' }}>
-                                            <b>Product:</b> {product.name}
+                                            <b>Productos:</b> {product.name}
                                         </Box>
                                         <Box>
                                             <Button
@@ -162,7 +163,7 @@ const Cart = () => {
                                                 sx={{ margin: '5px' }}
                                                 onClick={() => handleRemoveProductCart(product._id, product)}
                                             >
-                                                Remove
+                                                Eliminar
                                             </Button>
                                         </Box>
                                     </Details>
@@ -188,13 +189,13 @@ const Cart = () => {
                     })}
                 </Box>
                 <Summary>
-                    <Typography>ORDER SUMMARY</Typography>
+                    <Typography sx={{ fontSize: '20px' }}>Resumen de la Orden</Typography>
                     <SummaryItem>
                         <span>Subtotal</span>
                         <span>$ {subtotal(cartToMap)}</span>
                     </SummaryItem>
                     <SummaryItem>
-                        <span>Estimated Shipping</span>
+                        <span>Valor del envio</span>
                         <span>$ 0</span>
                     </SummaryItem>
                     <SummaryItem style={{ fontWeight: 500, fontSize: '24px' }}>
@@ -205,9 +206,7 @@ const Cart = () => {
                 </Summary>
             </Bottom>
             <Snackbar open={open} autoHideDuration={5000} onClose={handleClose}>
-                <Alert severity="warning">
-                    You can buy from 1un, click on remove if you want to delete the product
-                </Alert>
+                <Alert severity="warning">Podes comprar 1un minimo, si queres removerlo hace click en eliminar</Alert>
             </Snackbar>
         </Box>
     )
