@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import {setProduct } from "../store/product";
 import {
+  Box,
   Button,
   FormControl,
   FormControlLabel,
@@ -18,13 +19,16 @@ import {
   TextField,
 } from "@mui/material";
 import { useNavigate } from "react-router";
+import { useEffect } from "react";
+import { useState } from "react";
 
 
 export default function TableProduct() {
   const { product } = useSelector((state) => state);
   const navigate = useNavigate()
   const dispatch = useDispatch();
-  const [edit, setEdit] = React.useState({});
+  const [edit, setEdit] = useState({});
+
 
   React.useEffect(() => {
     axios.get("/api/products/all")
@@ -59,11 +63,11 @@ export default function TableProduct() {
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Cantidad : {product.length} Productos
+            <TableCell>Quantity : {product.length} 
             <br/>
                 Nombre</TableCell>
-            <TableCell align="center">Descripcion</TableCell>
-            <TableCell align="center">Imagen</TableCell>
+            <TableCell align="center">Description</TableCell>
+            <TableCell align="center">Image</TableCell>
             <TableCell align="center">Precio</TableCell>
             <TableCell align="center">Stock</TableCell>
             <TableCell align="center">Categoria</TableCell>
@@ -77,7 +81,7 @@ export default function TableProduct() {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell>
-                  {`${i+1} - ${prod.name.slice(0, 18)} ...`}
+                  {/* {`${i+1} - ${prod.name.slice(0, 18)} ...`} */}
                   <TextField
                     type="text"
                     name="name"
@@ -133,37 +137,38 @@ export default function TableProduct() {
                     placeholder={prod.stock}
                   />
                 </TableCell>
-
+                <Box sx={{display:"flex", flexDirection:"column",justifyContent:"center", alignContent:"center", alignItems:"center"}}>
                 <FormControl component="fieldset">
                   <RadioGroup
-                    aria-label="gender"
                     name="category"
-                    value="category"
+                    defaultValue="Indumentaria"
                     onChange={handleChangeEdit}
                   >
                     <FormControlLabel
                       value="Indumentaria"
-                      control={<Radio color="primary" />}
+                      control={<Radio />}
                       label="Indumentaria"
                     />
                     <FormControlLabel
                       value="Accesorios"
-                      control={<Radio color="primary" />}
+                      control={<Radio />}
                       label="Accesorios"
                     />
                     <FormControlLabel
                       value="Bazar"
-                      control={<Radio color="primary" />}
+                      control={<Radio />}
                       label="Bazar"
                     />
                   </RadioGroup>
                 </FormControl>
-
+              
                 <Button 
-                autoFocus 
+                variant="contained"
                 id={prod._id} 
-                onClick={handleEditProduct}>Guardar</Button>
-
+                    onClick={handleEditProduct}
+                    sx={{margin:"10px"}}
+                  >Guardar</Button>
+                </Box>
               </TableRow>
             ))
           ) : (

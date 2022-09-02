@@ -2,7 +2,7 @@ import { createAction, createAsyncThunk, createReducer } from "@reduxjs/toolkit"
 import axios from "axios";
 
 export const sendCreateProduct = createAsyncThunk('CREATE_PRODUCT', async (data) => {
-      return await axios.post('/api/products/create', data)
+    return await axios.post('/api/products/create', data)
 })
 
 export const getProducts = createAsyncThunk ("GET_PRODUCT",async ()=>{

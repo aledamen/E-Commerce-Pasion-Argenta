@@ -6,7 +6,9 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useSelector } from "react-redux";
 import { Link } from 'react-router-dom';
+import { Box } from '@mui/material';
 import FormCreateProduct, { DeleteProduct, EditProduct, UsersOptions} from './AdminForm';
+
 
 
 function ProfileCard({props}) {
@@ -15,7 +17,7 @@ function ProfileCard({props}) {
 if(user.isAdmin) {
   if(props.title==="Crear Productos")return (
     
-    <Card sx={{ minWidth: 275 }} style={{margin:"10px",textAlign: "center" }}>
+    <Card sx={{ minWidth: 275 }} style={{margin:"10px",textAlign: "center", justifyContent:"center" }}>
       <CardContent>
         <Typography sx={{ fontSize: 18}} color="text.secondary" gutterBottom>
           {props.title}

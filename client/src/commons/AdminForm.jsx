@@ -8,7 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useDispatch} from "react-redux";
 import { sendCreateProduct} from "../store/product";
 import TableProduct from "../components/TableProduct";
-import { Slide } from "@mui/material";
+import { Alert, alertClasses, Box, Grid, Slide } from "@mui/material";
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -44,10 +44,13 @@ export default function FormCreateProduct({ props }) {
       .catch((err) => err);
   };
   return (
-    <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+    <Grid style={{ display: "flex"}} container justifyContent="center">
+      <Box sx={{display:"flex",justifyContent: "center"}}>
+              <Button variant="contained" onClick={handleClickOpen}>
         Crear Producto
-      </Button>
+        </Button>
+      </Box>
+
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Crear Productos</DialogTitle>
         <DialogContent>
@@ -56,14 +59,14 @@ export default function FormCreateProduct({ props }) {
           <TextField autoFocus margin="dense" id="description" name="description" label="Descripcion"  type="url"  fullWidth  variant="standard" onChange={createProduct}/>
           <TextField autoFocus margin="dense" id="price" name="price" label="Precio" type="number"  fullWidth  variant="standard" onChange={createProduct}/>
           <TextField autoFocus margin="dense" id="stock" name="stock" label="Stock"  type="number"  fullWidth  variant="standard" onChange={createProduct}/>
-          <TextField autoFocus margin="dense" id="category" name="Categoria" label="category"  type="name"  fullWidth  variant="standard" onChange={createProduct}/>
+          <TextField autoFocus margin="dense" id="category" name="Categoria" label="Category"  type="name"  fullWidth  variant="standard" onChange={createProduct}/>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleCreate}>Crear Producto</Button>
+          <Button variant="contained" onClick={handleClose}>Cancel</Button>
+          <Button variant="contained" onClick={handleCreate}>Crear Producto</Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Grid>
   );
 }
 
@@ -77,9 +80,9 @@ const handleClickOpen = ()=>setOpen(true)
 const handleClose = ()=>setOpen(false)
 
   return (
-    <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Editar
+    <Grid style={{ display: "flex"}} container justifyContent="center">
+      <Button variant="contained" onClick={handleClickOpen}>
+        Edit
       </Button>
       <Dialog
         fullScreen
@@ -98,10 +101,10 @@ const handleClose = ()=>setOpen(false)
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-             Productos
+             Products
             </Typography>
             <Button autoFocus color="inherit" onClick={handleClose}>
-              Cerrar
+              Close
             </Button>
           </Toolbar>
         </AppBar>
@@ -109,7 +112,7 @@ const handleClose = ()=>setOpen(false)
      <TableProduct />
       </DialogContent>
       </Dialog>
-    </div>
+    </Grid>
   );
 }
 
@@ -133,18 +136,19 @@ const [product,setProduct]=React.useState([])
   }
 
   return (
-    <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+    <Grid style={{ display: "flex"}} container justifyContent="center">
+      <Button variant="contained" onClick={handleClickOpen}>
         Eliminar
       </Button>
       
               <Dialog open={open} onClose={handleClose}>
               <DialogTitle>Eliminar Productos</DialogTitle>
-              <DialogContent>
-                {Array.isArray(product) ? product.map((prod,i)=>{
+              <DialogContent sx={{display:"flex", flexDirection:"column", textAlign:"center"}}>
+                {Array.isArray(product) ? (product?.map((prod,i)=>{
                 return <div>
-                  <p>{prod.name}</p> 
-                  <Button 
+                  <Typography sx={{margin:"5px"}}>{prod.name}</Typography> 
+                  <Button
+                  variant="contained"  
                 autoFocus 
                 name={prod.name}
                 id={prod._id} 
@@ -156,11 +160,11 @@ const [product,setProduct]=React.useState([])
                 }
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleClose}>Cancel</Button>
+                <Button variant="contained" onClick={handleClose}>Cancel</Button>
               </DialogActions>
             </Dialog>
       
-    </div>
+    </Grid>
   )
 }
 

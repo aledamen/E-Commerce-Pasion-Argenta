@@ -54,14 +54,23 @@ static async getFavorites (req,res) {
 }
 
 static async addFavorites (req,res) {
-    try{
-        const user = await UserService.addFavorites(req.body.id,req.body.favorites)
+    try {
+        const user = await UserService.addFavorites(req.params.id,req.body)
         if (!user) return res.status(404).send('User not found/favorite already added') 
         return res.send(user)
     } catch (error) {
         console.log(error);
     }
-}
+    }
+    
+    static async deleteFavorite(req, res) {
+        try {
+            const user = await UserService.deleteFavorite(req.params.id, req.body._id)
+            res.status(201).send(user)
+        } catch (err) {
+            console.error(err)
+        }
+    }
 
 static async removeFromCart(req, res) {
     try{

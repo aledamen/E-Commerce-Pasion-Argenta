@@ -4,9 +4,10 @@ import { Link } from "react-router-dom";
 import IconButton from "@mui/material/IconButton";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, sendMe } from "../store/user";
+import { addToCart, addToFavorites, removeFromFavorites, sendMe } from "../store/user";
 import { Alert, Snackbar } from "@mui/material";
 import { saveToLocalStorage } from "../utils/utils";
 
@@ -15,6 +16,7 @@ export const ProductsCards = ({ props }) => {
   const user = useSelector((state) => state.user)
   const [openAddCart, setOpenAddCart] = useState(false);
   const [openAddFavorites, setOpenAddFavorites] = useState(false);
+  const [openRemoveFavorites, setOpenRemoveFavorites] = useState(false);
   const dispatch = useDispatch()
 
 
@@ -25,9 +27,12 @@ export const ProductsCards = ({ props }) => {
   }
   const handleAddFavorites = () => {
     setOpenAddFavorites(true)
-    // dispatch(addToCart({pid: props._id, amount:1}))
+    user.username && dispatch(addToFavorites(props))
   }
-
+  const handleRemoveFavorites = () => {
+    setOpenRemoveFavorites(true)
+    user.username && dispatch(removeFromFavorites(props))
+  }
   const handleCloseAlert = () => {
     setOpenAddCart(false);
     setOpenAddFavorites(false)
@@ -37,7 +42,7 @@ export const ProductsCards = ({ props }) => {
     <>
       <Card style={{ width: "18rem" }}>
         <Link to={`/products/${props._id}`} style={{ textDecoration: "none" }}>
-          <Card.Img variant="top" src={props.img} />
+          <Card.Img variant="top" src={props.img} style={{width:"286px", height:"275px"}} />
         </Link>
         <Card.Body>
           <Card.Title
@@ -70,6 +75,13 @@ export const ProductsCards = ({ props }) => {
                 >
                   <FavoriteIcon  fontSize="medium" />
                 </IconButton>
+                <IconButton
+                  onClick={handleRemoveFavorites}
+                  color="default"
+                  aria-label="add to shopping cart"
+                >
+                  <DeleteIcon  fontSize="medium" />
+                </IconButton>
               </span>
             </h5>
           </div>
@@ -87,6 +99,14 @@ export const ProductsCards = ({ props }) => {
         onClose={handleCloseAlert}
       >
         <Alert severity="success">Product added to Favorites</Alert>
+
+        </Snackbar>
+        <Snackbar
+        open={openRemoveFavorites}
+        autoHideDuration={3000}
+        onClose={handleCloseAlert}
+      >
+        <Alert severity="success">Product removed from Favorites</Alert>
 
         </Snackbar>
       </Card>

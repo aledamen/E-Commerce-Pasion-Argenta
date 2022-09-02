@@ -69,9 +69,9 @@ const Grid = () => {
           </ButtonGroup>
         </Grid2>
 
-        <Row>
+        <Row style={{display:"flex"}}>
           {products.map((product, index) => (
-            <Col style={{ marginBottom: "20px" }} key={`product-${index}`}>
+            <Col style={{marginBottom:"20px", display:"flex", justifyContent:"center"}} key={`product-${index}`}>
               <ProductsCards key={index} props={product} />
             </Col>
           ))}

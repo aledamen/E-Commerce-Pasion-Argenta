@@ -22,9 +22,10 @@ router.get("/:id", UserController.getUser);
 router.get("/favorites/:id", UserController.getFavorites);
 
 
-//agregar favoritos
-router.put("/favorites/", UserController.addFavorites);
-
+//agregar favorito
+router.put("/addfavorite/:id", UserController.addFavorites);
+//remover favorito
+router.put('/removefavorite/:id', UserController.deleteFavorite)
 //ruta para modificar un usuario
 router.put("/modify/", UserController.userModify)
 
